@@ -47,38 +47,19 @@ export function wrapParagraph(ctx, text, maxWidth, letterSpacing = 0) {
 
 /**
  * 본문 문자열 → 단락 배열.
- * - 빈 줄(\n\n)로 단락 구분
- * - '---' 단독 행은 PAGE_BREAK 마커로 보존 (앞뒤 빈줄 없어도 인식)
+ * - 엔터 한 번(\n) = 새 단락
+ * - '---' 단독 행 = PAGE_BREAK 마커
  */
 export function parseBodyText(bodyText) {
-  const normalized = bodyText.trim().replace(/\n{3,}/g, '\n\n')
   const paragraphs = []
-
-  for (const block of normalized.split('\n\n')) {
-    const trimmed = block.trim()
+  for (const line of bodyText.trim().split('\n')) {
+    const trimmed = line.trim()
     if (!trimmed) continue
-
-    const lines = trimmed.split('\n')
-    let currentLines = []
-
-    for (const line of lines) {
-      if (line.trim() === '---') {
-        if (currentLines.length) {
-          const para = currentLines.join('\n').trim()
-          if (para) paragraphs.push(para)
-          currentLines = []
-        }
-        paragraphs.push(PAGE_BREAK)
-      } else {
-        currentLines.push(line)
-      }
-    }
-
-    if (currentLines.length) {
-      const para = currentLines.join('\n').trim()
-      if (para) paragraphs.push(para)
+    if (trimmed === '---') {
+      paragraphs.push(PAGE_BREAK)
+    } else {
+      paragraphs.push(trimmed)
     }
   }
-
   return paragraphs
 }
