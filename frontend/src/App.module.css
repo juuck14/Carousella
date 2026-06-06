@@ -26,21 +26,24 @@
   gap: 14px;
 }
 
-.logo {
-  width: 38px;
-  height: 38px;
-  background: var(--text);
-  color: #F4F3EF;
+/* 페이지네이션 닷 마크 */
+.logoMark {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-family: var(--display);
-  font-size: 20px;
-  font-weight: 700;
-  border-radius: 2px;
+  gap: 5px;
   flex-shrink: 0;
-  letter-spacing: -.01em;
+  padding: 0 4px;
 }
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.dotGhost { background: var(--faint); opacity: .45; }
+.dotLead  { background: var(--clay); }
 
 .brandText {
   display: flex;
@@ -49,12 +52,16 @@
 }
 
 .brandName {
-  font-family: var(--serif);
+  font-family: var(--display);
   font-size: 17px;
-  font-weight: 400;
+  font-weight: 800;
   color: var(--text);
-  letter-spacing: .02em;
+  letter-spacing: -.01em;
   line-height: 1;
+}
+
+.brandAccent {
+  color: var(--clay);
 }
 
 .brandSub {
