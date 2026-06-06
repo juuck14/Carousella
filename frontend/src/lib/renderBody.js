@@ -33,13 +33,14 @@ export function renderBody(ctx, pageEntries, pageNum, cfg) {
     margin, bodyFontSize, lineSpacing, paraSpacing, letterSpacing,
     bgColor, textColor, pageNumColor, ruleColor, pageNumSize, canvasSize,
   } = cfg
+  const canvasH = cfg.canvasHeight || canvasSize
 
   const lineH    = bodyFontSize * lineSpacing
   const paraGapH = bodyFontSize * paraSpacing
 
   // ── 배경 ──────────────────────────────────────────────────
-  ctx.fillStyle = bgColor     // '#F4F3EF'
-  ctx.fillRect(0, 0, canvasSize, canvasSize)
+  ctx.fillStyle = bgColor
+  ctx.fillRect(0, 0, canvasSize, canvasH)
 
   // ── 상단 구분선 ───────────────────────────────────────────
   ctx.strokeStyle = ruleColor
@@ -65,7 +66,7 @@ export function renderBody(ctx, pageEntries, pageNum, cfg) {
   }
 
   // ── 하단 구분선 ───────────────────────────────────────────
-  const bottomRuleY = canvasSize - (margin + 12)
+  const bottomRuleY = canvasH - (margin + 12)
   ctx.strokeStyle = ruleColor
   ctx.lineWidth   = 1
   ctx.beginPath()
@@ -80,7 +81,7 @@ export function renderBody(ctx, pageEntries, pageNum, cfg) {
   ctx.textBaseline = 'bottom'
   ctx.letterSpacing = '0.2em'
   const pnW = ctx.measureText(label).width
-  const pnY = canvasSize - (margin - 34)
+  const pnY = canvasH - (margin - 34)
   ctx.fillText(label, (canvasSize - pnW) / 2, pnY)
   ctx.letterSpacing = '0px'
 }

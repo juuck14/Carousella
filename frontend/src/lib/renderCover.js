@@ -37,13 +37,14 @@ export function renderCover(ctx, title, subtitle, label, coverImg, cfg) {
     margin, coverSplitRatio, coverTitleSize, coverLabelSize,
     coverBgColor, coverTextColor, coverLabelColor, canvasSize,
   } = cfg
+  const canvasH = cfg.canvasHeight || canvasSize
 
-  const splitY   = Math.round(canvasSize * coverSplitRatio)
-  const imgAreaH = canvasSize - splitY
+  const splitY   = Math.round(canvasH * coverSplitRatio)
+  const imgAreaH = canvasH - splitY
 
   // ── 배경 ──────────────────────────────────────────────────
-  ctx.fillStyle = coverBgColor          // '#141210'
-  ctx.fillRect(0, 0, canvasSize, canvasSize)
+  ctx.fillStyle = coverBgColor
+  ctx.fillRect(0, 0, canvasSize, canvasH)
 
   // ── 하단 이미지 ───────────────────────────────────────────
   if (coverImg) {
@@ -93,7 +94,7 @@ export function renderCover(ctx, title, subtitle, label, coverImg, cfg) {
   ctx.stroke()
 
   // ── 제목 + 부제목 — 이미지 위쪽 바닥에 정렬 ──────────────
-  const tw = canvasSize - margin * 2
+  const tw = canvasSize - margin * 2   // 텍스트 너비 (width 기준)
 
   ctx.font = `700 ${coverTitleSize}px "Nanum Myeongjo", "Noto Serif KR", serif`
   const titleLines  = wrapParagraph(ctx, title || '제목을 입력하세요', tw, 0)
