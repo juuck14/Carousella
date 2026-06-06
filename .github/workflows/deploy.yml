@@ -1,9 +1,9 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:   # 수동 실행도 허용
+  release:
+    types: [published]   # 릴리즈 발행 시에만 배포
+  workflow_dispatch:      # 수동 실행 허용
 
 permissions:
   contents: read
