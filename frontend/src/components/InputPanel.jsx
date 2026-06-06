@@ -147,7 +147,7 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange }) 
       <div className={styles.field}>
         <label className={styles.label}>LABEL</label>
         <div className={styles.labelPicker}>
-          {['음악', '영화', '평론', '기타'].map(l => (
+          {['음악', '영화', '기타'].map(l => (
             <button
               key={l}
               type="button"
