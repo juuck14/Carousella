@@ -74,7 +74,7 @@ export default function App() {
     if (busy || !pages.length) return
     setBusy(true)
     try {
-      const urls = await generateCarousel(doc.title, doc.subtitle, doc.imageFile, doc.body, settings)
+      const urls = await generateCarousel(doc.title, doc.subtitle, doc.label, doc.imageFile, doc.body, settings)
       const url  = urls[safeIdx] ?? urls[0]
       if (!url) throw new Error('생성 실패')
       const a = document.createElement('a')
@@ -92,11 +92,29 @@ export default function App() {
     if (busy || !pages.length) return
     setBusy(true)
     try {
-      const urls = await generateCarousel(doc.title, doc.subtitle, doc.imageFile, doc.body, settings)
+      const urls = await generateCarousel(doc.title, doc.subtitle, doc.label, doc.imageFile, doc.body, settings)
       const zip  = new JSZip()
+
+      // PNG 이미지
       urls.forEach((dataUrl, i) => {
         zip.file(`page_${String(i + 1).padStart(2, '0')}.png`, dataUrl.split(',')[1], { base64: true })
       })
+
+      // 마크다운 파일
+      const mdLines = []
+      if (doc.title)    mdLines.push(`# ${doc.title}`)
+      if (doc.subtitle) mdLines.push(`**${doc.subtitle}**`)
+      if (mdLines.length && doc.body) mdLines.push('')
+      if (doc.body)     mdLines.push(doc.body)
+      zip.file('content.md', mdLines.join('\n'))
+
+      // 첨부 표지 이미지
+      if (doc.imageFile) {
+        const ext     = doc.imageFile.name.split('.').pop() || 'jpg'
+        const imgData = await doc.imageFile.arrayBuffer()
+        zip.file(`cover.${ext}`, imgData)
+      }
+
       const blob    = await zip.generateAsync({ type: 'blob' })
       const zipUrl  = URL.createObjectURL(blob)
       const a       = document.createElement('a')
@@ -104,7 +122,7 @@ export default function App() {
       a.download    = 'carousel.zip'
       a.click()
       URL.revokeObjectURL(zipUrl)
-      flash(`${urls.length}장을 ZIP으로 내보냈습니다`)
+      flash(`${urls.length}장 + 원고를 ZIP으로 내보냈습니다`)
     } catch {
       flash('내보내기에 실패했습니다')
     }

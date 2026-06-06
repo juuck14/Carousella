@@ -32,7 +32,7 @@ function drawCoverFit(ctx, img, destX, destY, targetW, targetH) {
 }
 
 /** 표지 캔버스 렌더링 */
-export function renderCover(ctx, title, subtitle, coverImg, cfg) {
+export function renderCover(ctx, title, subtitle, label, coverImg, cfg) {
   const {
     margin, coverSplitRatio, coverTitleSize, coverLabelSize,
     coverBgColor, coverTextColor, coverLabelColor, canvasSize,
@@ -71,7 +71,7 @@ export function renderCover(ctx, title, subtitle, coverImg, cfg) {
   ctx.fillStyle    = coverLabelColor
   ctx.textBaseline = 'top'
   ctx.letterSpacing = '0.34em'
-  ctx.fillText('— 평론 —', margin, margin - 2)
+  ctx.fillText(`— ${label || '평론'} —`, margin, margin - 2)
   ctx.letterSpacing = '0px'
 
   // ── 날짜 우상단 ───────────────────────────────────────────

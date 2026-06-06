@@ -45,7 +45,7 @@ export async function loadFonts(cfg) {
  * @param {object}    cfg        — DEFAULT_CONFIG 기반 설정
  * @returns {Promise<string[]>}  PNG data URL 배열 (index 0 = 표지)
  */
-export async function generateCarousel(title, subtitle, imageFile, bodyText, cfg) {
+export async function generateCarousel(title, subtitle, label, imageFile, bodyText, cfg) {
   await loadFonts(cfg)
 
   const coverImg   = await loadCoverImage(imageFile)
@@ -66,7 +66,7 @@ export async function generateCarousel(title, subtitle, imageFile, bodyText, cfg
   const coverCanvas  = document.createElement('canvas')
   coverCanvas.width  = cfg.canvasSize
   coverCanvas.height = cfg.canvasSize
-  renderCover(coverCanvas.getContext('2d'), title, subtitle, coverImg, cfg)
+  renderCover(coverCanvas.getContext('2d'), title, subtitle, label, coverImg, cfg)
   dataUrls.push(coverCanvas.toDataURL('image/png'))
 
   // 본문 페이지

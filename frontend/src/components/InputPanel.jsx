@@ -143,6 +143,23 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange }) 
         />
       </div>
 
+      {/* 라벨 */}
+      <div className={styles.field}>
+        <label className={styles.label}>LABEL</label>
+        <div className={styles.labelPicker}>
+          {['음악', '영화', '기타'].map(l => (
+            <button
+              key={l}
+              type="button"
+              className={`${styles.labelBtn} ${doc.label === l ? styles.labelBtnActive : ''}`}
+              onClick={() => setDoc({ label: l })}
+            >
+              {l}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* 부제목 */}
       <div className={styles.field}>
         <label className={styles.label}>
