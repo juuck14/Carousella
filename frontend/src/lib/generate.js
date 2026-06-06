@@ -51,6 +51,9 @@ export async function generateCarousel(title, subtitle, label, imageFile, bodyTe
   const coverImg   = await loadCoverImage(imageFile)
   const paragraphs = parseBodyText(bodyText)
 
+  // □ 마커 삽입
+  if (paragraphs.length > 0) paragraphs.push('□')
+
   // 페이지 분할 계산용 임시 캔버스
   const tmpCanvas  = document.createElement('canvas')
   tmpCanvas.width  = cfg.canvasSize
@@ -59,6 +62,21 @@ export async function generateCarousel(title, subtitle, label, imageFile, bodyTe
 
   const availableH = cfg.canvasSize - cfg.margin * 2 - 60
   const pages      = splitIntoPages(paragraphs, tmpCtx, cfg, availableH)
+
+  // □가 혼자 마지막 페이지면 → 이전 페이지 마지막 텍스트에 ' □' 붙임
+  if (pages.length > 0) {
+    const lastPg = pages[pages.length - 1]
+    const texts  = lastPg.filter(([t]) => t.trim())
+    if (texts.length === 1 && texts[0][0] === '□') {
+      pages.pop()
+      if (pages.length > 0) {
+        const prev = pages[pages.length - 1]
+        for (let i = prev.length - 1; i >= 0; i--) {
+          if (prev[i][0].trim()) { prev[i] = [prev[i][0] + ' □', prev[i][1]]; break }
+        }
+      }
+    }
+  }
 
   const dataUrls = []
 

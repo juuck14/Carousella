@@ -47,19 +47,29 @@ export function wrapParagraph(ctx, text, maxWidth, letterSpacing = 0) {
 
 /**
  * 본문 문자열 → 단락 배열.
- * - 엔터 한 번(\n) = 새 단락
+ * - 엔터 한 번(\n) = 같은 단락 안 줄바꿈 (단락 간격 없음)
+ * - 엔터 두 번(\n\n, 빈 줄) = 새 단락
  * - '---' 단독 행 = PAGE_BREAK 마커
  */
 export function parseBodyText(bodyText) {
   const paragraphs = []
-  for (const line of bodyText.trim().split('\n')) {
-    const trimmed = line.trim()
-    if (!trimmed) continue
-    if (trimmed === '---') {
+  const lines = bodyText.trim().split('\n')
+  let cur = []
+
+  const flush = () => {
+    if (cur.length) { paragraphs.push(cur.join('\n')); cur = [] }
+  }
+
+  for (const line of lines) {
+    if (line.trim() === '---') {
+      flush()
       paragraphs.push(PAGE_BREAK)
+    } else if (line.trim() === '') {
+      flush()
     } else {
-      paragraphs.push(trimmed)
+      cur.push(line)
     }
   }
+  flush()
   return paragraphs
 }
