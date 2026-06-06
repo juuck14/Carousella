@@ -43,28 +43,41 @@ function Stripe() {
   )
 }
 
+// ─── 인라인 세그먼트 렌더 ─────────────────────────────────────────
+function InlineSegs({ text }) {
+  return parseInline(text).map((seg, j) => {
+    if (seg.t === 'bold') return <strong key={j} style={{ fontWeight: 700 }}>{seg.s}</strong>
+    if (seg.t === 'em')   return <em key={j} style={{ fontStyle: 'italic' }}>{seg.s}</em>
+    return <span key={j}>{seg.s}</span>
+  })
+}
+
 // ─── 단락 블록 ────────────────────────────────────────────────────
 function Paras({ paras, gap, fontSize, lineHeight }) {
   return (
     <>
-      {paras.map((p, i) => (
-        <p key={i} style={{
-          margin: 0,
-          marginTop: i ? gap : 0,
-          fontFamily: SERIF,
-          fontSize,
-          lineHeight,
-          color: C.ink,
-          textAlign: 'justify',
-          wordBreak: 'keep-all',
-        }}>
-          {parseInline(p).map((seg, j) => {
-            if (seg.t === 'bold') return <strong key={j} style={{ fontWeight: 700 }}>{seg.s}</strong>
-            if (seg.t === 'em')   return <em key={j} style={{ fontStyle: 'italic' }}>{seg.s}</em>
-            return <span key={j}>{seg.s}</span>
-          })}
-        </p>
-      ))}
+      {paras.map((p, i) => {
+        const lines = p.split('\n')
+        return (
+          <p key={i} style={{
+            margin: 0,
+            marginTop: i ? gap : 0,
+            fontFamily: SERIF,
+            fontSize,
+            lineHeight,
+            color: C.ink,
+            textAlign: 'justify',
+            wordBreak: 'keep-all',
+          }}>
+            {lines.map((line, li) => (
+              <span key={li}>
+                {li > 0 && <br />}
+                <InlineSegs text={line} />
+              </span>
+            ))}
+          </p>
+        )
+      })}
     </>
   )
 }

@@ -157,7 +157,6 @@ export default function App() {
             <span className={styles.brandName}>
               Carousell<span className={styles.brandAccent}>a</span>
             </span>
-            <span className={styles.brandSub}>CRITIQUE&nbsp;CAROUSEL</span>
           </div>
         </div>
 
