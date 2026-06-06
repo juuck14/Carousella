@@ -30,8 +30,9 @@ export const DEFAULT_CONFIG = {
   // 페이지 번호
   pageNumSize: 24,
 
-  // 캔버스 (변경 금지 — 인스타그램 표준)
-  canvasSize: 1080,
+  // 캔버스 크기 (인스타그램 표준)
+  canvasSize:   1080,   // 너비 (고정)
+  canvasHeight: 1080,   // 높이: 1080(1:1) or 1350(4:5)
 }
 
 /** SettingsPanel이 렌더링할 슬라이더 필드 목록 */

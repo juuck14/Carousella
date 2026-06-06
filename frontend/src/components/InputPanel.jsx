@@ -151,6 +151,23 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange }) 
         />
       </div>
 
+      {/* 포맷 */}
+      <div className={styles.field}>
+        <label className={styles.label}>FORMAT</label>
+        <div className={styles.labelPicker}>
+          {[['1 : 1', 1080], ['4 : 5', 1350]].map(([lbl, h]) => (
+            <button
+              key={h}
+              type="button"
+              className={`${styles.labelBtn} ${(settings?.canvasHeight || 1080) === h ? styles.labelBtnActive : ''}`}
+              onClick={() => onSettingsChange({ ...settings, canvasHeight: h })}
+            >
+              {lbl}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* 라벨 */}
       <div className={styles.field}>
         <label className={styles.label}>LABEL</label>

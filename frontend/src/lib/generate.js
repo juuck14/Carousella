@@ -54,13 +54,15 @@ export async function generateCarousel(title, subtitle, label, imageFile, bodyTe
   // □ 마커 삽입
   if (paragraphs.length > 0) paragraphs.push('□')
 
+  const canvasH = cfg.canvasHeight || cfg.canvasSize
+
   // 페이지 분할 계산용 임시 캔버스
   const tmpCanvas  = document.createElement('canvas')
   tmpCanvas.width  = cfg.canvasSize
-  tmpCanvas.height = cfg.canvasSize
+  tmpCanvas.height = canvasH
   const tmpCtx     = tmpCanvas.getContext('2d')
 
-  const availableH = cfg.canvasSize - cfg.margin * 2 - 60
+  const availableH = canvasH - cfg.margin * 2 - 60
   const pages      = splitIntoPages(paragraphs, tmpCtx, cfg, availableH)
 
   // □가 혼자 마지막 페이지면 → 이전 페이지 마지막 텍스트에 ' □' 붙임
@@ -83,7 +85,7 @@ export async function generateCarousel(title, subtitle, label, imageFile, bodyTe
   // 표지
   const coverCanvas  = document.createElement('canvas')
   coverCanvas.width  = cfg.canvasSize
-  coverCanvas.height = cfg.canvasSize
+  coverCanvas.height = canvasH
   renderCover(coverCanvas.getContext('2d'), title, subtitle, label, coverImg, cfg)
   dataUrls.push(coverCanvas.toDataURL('image/png'))
 
@@ -91,7 +93,7 @@ export async function generateCarousel(title, subtitle, label, imageFile, bodyTe
   for (let i = 0; i < pages.length; i++) {
     const canvas  = document.createElement('canvas')
     canvas.width  = cfg.canvasSize
-    canvas.height = cfg.canvasSize
+    canvas.height = canvasH
     renderBody(canvas.getContext('2d'), pages[i], i + 2, cfg)
     dataUrls.push(canvas.toDataURL('image/png'))
   }

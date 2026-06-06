@@ -84,8 +84,9 @@ function Paras({ paras, gap, fontSize, lineHeight }) {
 
 // ─── 표지 (무드 A) ────────────────────────────────────────────────
 function CoverA({ doc, cfg }) {
-  const m     = cfg.margin
-  const split = Math.round(1080 * cfg.coverSplitRatio)
+  const m       = cfg.margin
+  const canvasH = cfg.canvasHeight || 1080
+  const split   = Math.round(canvasH * cfg.coverSplitRatio)
   const coverBg = cfg.coverBgColor || C.dark
 
   return (
@@ -164,17 +165,20 @@ function BodyA({ page, cfg }) {
 
 // ─── 진입점 ──────────────────────────────────────────────────────
 export default function CarouselPage({ page, size = 540, doc, cfg }) {
-  const scale = size / 1080
+  const canvasW  = 1080
+  const canvasH  = cfg?.canvasHeight || 1080
+  const scale    = size / canvasW
+  const displayH = Math.round(size * canvasH / canvasW)
 
   if (!page) {
-    return <div style={{ width: size, height: size, background: '#E8E5DE', borderRadius: 2 }} />
+    return <div style={{ width: size, height: displayH, background: '#E8E5DE', borderRadius: 2 }} />
   }
 
   return (
-    <div style={{ width: size, height: size, position: 'relative', overflow: 'hidden', flexShrink: 0 }}>
+    <div style={{ width: size, height: displayH, position: 'relative', overflow: 'hidden', flexShrink: 0 }}>
       <div style={{
         position: 'absolute', top: 0, left: 0,
-        width: 1080, height: 1080,
+        width: canvasW, height: canvasH,
         transform: `scale(${scale})`,
         transformOrigin: 'top left',
       }}>
