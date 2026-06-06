@@ -157,7 +157,7 @@
 
 .pageTotal {
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   letter-spacing: .04em;
 }
@@ -170,7 +170,7 @@
 
 .spec {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .06em;
   color: var(--faint);
 }
@@ -186,7 +186,8 @@
   border-radius: var(--radius);
   background: none;
   color: var(--soft);
-  font-size: 13px;
+  font-family: var(--serif);
+  font-size: 14px;
   letter-spacing: .03em;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
@@ -205,7 +206,8 @@
   border-radius: var(--radius);
   background: var(--text);
   color: #F4F3EF;
-  font-size: 13px;
+  font-family: var(--serif);
+  font-size: 14px;
   letter-spacing: .03em;
   cursor: pointer;
   transition: opacity 0.15s;
@@ -223,7 +225,7 @@
   background: var(--text);
   color: #F4F3EF;
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: .04em;
   padding: 10px 22px;
   border-radius: 24px;
@@ -296,6 +298,6 @@
   .toolDivider { display: none; }
   .btnOutline, .btnFill {
     padding: 6px 12px;
-    font-size: 12px;
+    font-size: 13px;
   }
 }
