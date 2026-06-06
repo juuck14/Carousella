@@ -1,9 +1,9 @@
 name: Deploy to GitHub Pages
 
+# 릴리즈 배포는 수동으로 트리거 (workflow_dispatch).
+# 릴리즈 절차: gh release create vX.Y.Z  →  gh workflow run deploy.yml
 on:
-  release:
-    types: [published]   # 릴리즈 발행 시에만 배포
-  workflow_dispatch:      # 수동 실행 허용
+  workflow_dispatch:
 
 permissions:
   contents: read
