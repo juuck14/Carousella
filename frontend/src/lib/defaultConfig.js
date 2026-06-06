@@ -6,29 +6,29 @@
  */
 
 export const DEFAULT_CONFIG = {
-  // 본문
-  bodyFontSize:    22,
-  lineSpacing:     2.05,
-  paraSpacing:     0.9,
+  // 본문 — 무드 A(활자) 기준
+  bodyFontSize:    30,
+  lineSpacing:     1.95,
+  paraSpacing:     0.93,
   letterSpacing:   0,
   margin:          120,
 
   // 표지
   coverSplitRatio: 0.42,   // 상단 텍스트 영역 비율 (0~1)
-  coverTitleSize:  48,
-  coverLabelSize:  20,
+  coverTitleSize:  64,
+  coverLabelSize:  23,
 
-  // 색상
+  // 색상 (Canvas 렌더용)
   bgColor:         '#F4F3EF',
   textColor:       '#1C1C1C',
-  pageNumColor:    '#B0ADA6',
-  ruleColor:       '#D8D5CE',
-  coverBgColor:    '#111111',
+  pageNumColor:    '#8A857C',
+  ruleColor:       '#DBD7CF',
+  coverBgColor:    '#141210',
   coverTextColor:  '#F4F3EF',
-  coverLabelColor: '#888880',
+  coverLabelColor: '#8C857A',
 
   // 페이지 번호
-  pageNumSize: 20,
+  pageNumSize: 24,
 
   // 캔버스 (변경 금지 — 인스타그램 표준)
   canvasSize: 1080,
@@ -38,7 +38,7 @@ export const DEFAULT_CONFIG = {
 export const CONFIG_FIELDS = [
   {
     key: 'bodyFontSize',    label: '본문 폰트 크기',
-    min: 16, max: 36, step: 1,    unit: 'px',
+    min: 20, max: 42, step: 1,    unit: 'px',
   },
   {
     key: 'lineSpacing',     label: '줄간격',
@@ -46,7 +46,7 @@ export const CONFIG_FIELDS = [
   },
   {
     key: 'paraSpacing',     label: '단락 간격',
-    min: 0.2, max: 1.6, step: 0.1,  unit: '×',
+    min: 0.3, max: 1.6, step: 0.05,  unit: '×',
   },
   {
     key: 'margin',          label: '여백',
@@ -59,6 +59,6 @@ export const CONFIG_FIELDS = [
   },
   {
     key: 'coverTitleSize',  label: '표지 제목 크기',
-    min: 28, max: 80, step: 2,    unit: 'px',
+    min: 36, max: 96, step: 2,    unit: 'px',
   },
 ]

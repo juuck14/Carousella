@@ -1,21 +1,29 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:        #F4F3EF;
-  --surface:   #FAFAF7;
-  --border:    #D8D5CE;
-  --text:      #1C1C1C;
-  --muted:     #888880;
-  --accent:    #1C1C1C;
-  --radius:    6px;
-  --font:      'Georgia', 'Batang', serif;
+  --bg:       #F4F3EF;
+  --panel:    #FAF9F5;
+  --stage:    #ECEAE3;
+  --border:   #DBD7CF;
+  --text:     #1C1C1C;
+  --soft:     #2A2723;
+  --muted:    #8A857C;
+  --faint:    #B4AFA6;
+  --clay:     #A8643F;
+  --accent:   #1C1C1C;
+  --radius:   6px;
+  --serif:    'Noto Serif KR', Georgia, serif;
+  --display:  'Nanum Myeongjo', 'Noto Serif KR', serif;
+  --mono:     'Courier New', ui-monospace, monospace;
 }
 
 html, body, #root {
   height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font);
+  font-family: var(--serif);
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
 }
+
+button { font-family: inherit; }

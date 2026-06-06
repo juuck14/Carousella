@@ -1,6 +1,5 @@
 /**
- * generate.js — 캐러셀 이미지 생성 진입점
- * 각 역할별 모듈을 조합해 generateCarousel()을 구성한다.
+ * generate.js — 캐러셀 이미지 생성 진입점 (Canvas 기반 PNG 내보내기)
  *
  * 모듈 구조:
  *   canvasUtils  — setFont, measureWidth, drawTextLine
@@ -15,36 +14,36 @@ import { splitIntoPages } from './layout'
 import { loadCoverImage, renderCover } from './renderCover'
 import { renderBody } from './renderBody'
 
-// ============================================================
-//  폰트 로딩
-// ============================================================
+// ─── 폰트 로딩 ────────────────────────────────────────────────
 
 /**
- * Google Fonts에서 Noto Serif KR을 캔버스에 사용 가능한 상태로 로드.
- * index.html에 Google Fonts <link>가 삽입된 상태여야 한다.
+ * 캔버스 렌더링 전에 필요한 폰트를 모두 로드한다.
+ * Google Fonts <link>가 index.html에 삽입된 상태여야 한다.
  */
 export async function loadFonts(cfg) {
   const specs = [
+    // 본문 / 규칙선 / 페이지 번호
     `400 ${cfg.bodyFontSize}px "Noto Serif KR"`,
-    `400 ${cfg.coverLabelSize}px "Noto Serif KR"`,
     `400 ${cfg.pageNumSize}px "Noto Serif KR"`,
-    `700 ${cfg.coverTitleSize}px "Noto Serif KR"`,
+    // 표지 레이블
+    `400 ${cfg.coverLabelSize}px "Noto Serif KR"`,
+    // 표지 제목 (Nanum Myeongjo)
+    `700 ${cfg.coverTitleSize}px "Nanum Myeongjo"`,
+    `400 ${cfg.coverTitleSize}px "Nanum Myeongjo"`,
   ]
   await Promise.all(specs.map(spec => document.fonts.load(spec)))
 }
 
-// ============================================================
-//  공개 API
-// ============================================================
+// ─── 공개 API ─────────────────────────────────────────────────
 
 /**
- * 캐러셀 이미지 생성.
- * @param {string}   title
- * @param {string}   subtitle
+ * 캐러셀 이미지 생성 — 1080×1080 PNG data URL 배열 반환
+ * @param {string}    title
+ * @param {string}    subtitle
  * @param {File|null} imageFile  — 표지 이미지 (없으면 null)
- * @param {string}   bodyText
- * @param {object}   cfg        — defaultConfig.js DEFAULT_CONFIG 기반
- * @returns {Promise<string[]>} PNG data URL 배열 (index 0 = 표지)
+ * @param {string}    bodyText
+ * @param {object}    cfg        — DEFAULT_CONFIG 기반 설정
+ * @returns {Promise<string[]>}  PNG data URL 배열 (index 0 = 표지)
  */
 export async function generateCarousel(title, subtitle, imageFile, bodyText, cfg) {
   await loadFonts(cfg)

@@ -1,5 +1,7 @@
+/* SettingsPanel.module.css */
+
 .panel {
-  padding: 28px 32px 40px;
+  padding: 28px 28px 40px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -12,15 +14,16 @@
 }
 
 .panelTitle {
+  font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: .18em;
   color: var(--muted);
   text-transform: uppercase;
 }
 
 .resetBtn {
   font-size: 11px;
-  letter-spacing: 0.04em;
+  letter-spacing: .04em;
   color: var(--muted);
   background: none;
   border: 1px solid var(--border);
@@ -29,11 +32,7 @@
   cursor: pointer;
   transition: color 0.1s, border-color 0.1s;
 }
-
-.resetBtn:hover {
-  color: var(--text);
-  border-color: var(--text);
-}
+.resetBtn:hover { color: var(--text); border-color: var(--text); }
 
 .field {
   display: flex;
@@ -48,15 +47,17 @@
 }
 
 .fieldLabel {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text);
+  letter-spacing: .02em;
 }
 
 .fieldValue {
-  font-size: 11px;
-  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--clay);
   font-variant-numeric: tabular-nums;
-  min-width: 40px;
+  min-width: 44px;
   text-align: right;
 }
 
@@ -81,13 +82,12 @@
   cursor: pointer;
   transition: transform 0.1s;
 }
-
-.slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-}
+.slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
 .hint {
-  font-size: 10px;
-  color: var(--border);
-  margin-top: 8px;
+  font-size: 11px;
+  color: var(--faint);
+  margin-top: 4px;
+  letter-spacing: .02em;
+  line-height: 1.6;
 }

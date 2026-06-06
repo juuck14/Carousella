@@ -1,23 +1,25 @@
-import { useState, useCallback } from 'react'
+/**
+ * InputPanel.jsx — 입력 사이드바
+ *
+ * Props:
+ *   doc     — { title, subtitle, imageFile, imageUrl, body }
+ *   setDoc  — (patch) => void
+ */
+
+import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { TEST_DATA } from '../lib/testData'
 import styles from './InputPanel.module.css'
 
-export default function InputPanel({ onGenerate, loading }) {
-  const [title,      setTitle]      = useState('')
-  const [subtitle,   setSubtitle]   = useState('')
-  const [body,       setBody]       = useState('')
-  const [imgFile,    setImgFile]    = useState(null)
-  const [imgPreview, setImgPreview] = useState('')
-
+export default function InputPanel({ doc, setDoc }) {
+  // 이미지 드롭/클릭 처리
   const onDrop = useCallback((accepted) => {
     const file = accepted[0]
     if (!file) return
-    setImgFile(file)
     const reader = new FileReader()
-    reader.onload = (e) => setImgPreview(e.target.result)
+    reader.onload = (e) => setDoc({ imageFile: file, imageUrl: e.target.result })
     reader.readAsDataURL(file)
-  }, [])
+  }, [setDoc])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -27,63 +29,70 @@ export default function InputPanel({ onGenerate, loading }) {
 
   function clearImage(e) {
     e.stopPropagation()
-    setImgFile(null)
-    setImgPreview('')
+    setDoc({ imageFile: null, imageUrl: null })
   }
 
-  function fillTestData() {
-    setTitle(TEST_DATA.title)
-    setSubtitle(TEST_DATA.subtitle)
-    setBody(TEST_DATA.body)
+  function loadSample() {
+    setDoc({
+      title:    TEST_DATA.title,
+      subtitle: TEST_DATA.subtitle,
+      body:     TEST_DATA.body,
+    })
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    if (!title.trim() || !body.trim()) return
-    onGenerate({ title, subtitle, body, imageFile: imgFile })
+  function clearAll() {
+    setDoc({ title: '', subtitle: '', body: '', imageFile: null, imageUrl: null })
   }
-
-  const canSubmit = title.trim() && body.trim() && !loading
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <div className={styles.form}>
 
       {/* 제목 */}
       <div className={styles.field}>
-        <label className={styles.label}>제목 <span className={styles.required}>*</span></label>
+        <label className={styles.label}>
+          TITLE <span className={styles.req}>*</span>
+        </label>
         <input
           className={styles.input}
           type="text"
           placeholder="앨범 / 작품 제목"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          value={doc.title}
+          onChange={e => setDoc({ title: e.target.value })}
         />
       </div>
 
       {/* 부제목 */}
       <div className={styles.field}>
-        <label className={styles.label}>부제목 <span className={styles.optional}>선택</span></label>
+        <label className={styles.label}>
+          SUBTITLE <span className={styles.opt}>선택</span>
+        </label>
         <input
           className={styles.input}
           type="text"
           placeholder="아티스트, 연도 등"
-          value={subtitle}
-          onChange={e => setSubtitle(e.target.value)}
+          value={doc.subtitle}
+          onChange={e => setDoc({ subtitle: e.target.value })}
         />
       </div>
 
       {/* 표지 이미지 */}
       <div className={styles.field}>
-        <label className={styles.label}>표지 이미지 <span className={styles.optional}>선택</span></label>
+        <label className={styles.label}>
+          COVER IMAGE <span className={styles.opt}>선택</span>
+        </label>
         <div
           {...getRootProps()}
-          className={`${styles.dropzone} ${isDragActive ? styles.dragActive : ''} ${imgPreview ? styles.hasImage : ''}`}
+          className={[
+            styles.dropzone,
+            isDragActive  ? styles.dragActive : '',
+            doc.imageUrl  ? styles.hasImage   : '',
+          ].join(' ')}
         >
           <input {...getInputProps()} />
-          {imgPreview ? (
+          {doc.imageUrl ? (
             <>
-              <img src={imgPreview} className={styles.preview} alt="표지 미리보기" />
-              <button type="button" className={styles.clearBtn} onClick={clearImage}>✕</button>
+              <img src={doc.imageUrl} className={styles.preview} alt="표지" />
+              <button type="button" className={styles.clearImgBtn} onClick={clearImage}>✕</button>
             </>
           ) : (
             <span className={styles.dropHint}>
@@ -94,30 +103,32 @@ export default function InputPanel({ onGenerate, loading }) {
       </div>
 
       {/* 본문 */}
-      <div className={styles.field}>
+      <div className={styles.field} style={{ flex: 1 }}>
         <label className={styles.label}>
-          본문 <span className={styles.required}>*</span>
-          <span className={styles.hint}>빈 줄 = 단락 구분 &nbsp;·&nbsp; <code>---</code> = 강제 페이지 분리</span>
+          BODY <span className={styles.req}>*</span>
+          <span className={styles.hint}>
+            빈 줄 = 단락 구분 &nbsp;·&nbsp; <code>---</code> = 강제 페이지 분리
+          </span>
         </label>
         <textarea
           className={styles.textarea}
           placeholder="평론 본문을 입력하세요..."
-          value={body}
-          onChange={e => setBody(e.target.value)}
-          rows={16}
+          value={doc.body}
+          onChange={e => setDoc({ body: e.target.value })}
+          rows={14}
         />
       </div>
 
-      {/* 버튼 */}
+      {/* 하단 버튼 */}
       <div className={styles.actions}>
-        <button type="submit" className={styles.submitBtn} disabled={!canSubmit}>
-          {loading ? '생성 중...' : '미리보기 생성'}
+        <button type="button" className={styles.sampleBtn} onClick={loadSample}>
+          샘플 불러오기
         </button>
-        <button type="button" className={styles.testBtn} onClick={fillTestData} disabled={loading}>
-          테스트 데이터
+        <button type="button" className={styles.clearBtn} onClick={clearAll}>
+          비우기
         </button>
       </div>
 
-    </form>
+    </div>
   )
 }

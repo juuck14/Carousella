@@ -1,10 +1,14 @@
+/* InputPanel.module.css */
+
 .form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 28px 32px 40px;
+  gap: 22px;
+  padding: 28px 28px 32px;
+  height: 100%;
 }
 
+/* ── 필드 ───────────────────────────────────── */
 .field {
   display: flex;
   flex-direction: column;
@@ -12,8 +16,9 @@
 }
 
 .label {
+  font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: .18em;
   color: var(--muted);
   text-transform: uppercase;
   display: flex;
@@ -21,46 +26,40 @@
   gap: 6px;
 }
 
-.required { color: var(--text); }
-
-.optional {
-  font-size: 10px;
-  color: var(--border);
-  text-transform: none;
-  letter-spacing: 0;
-}
+.req  { color: var(--text); font-size: 12px; letter-spacing: 0; }
+.opt  { font-size: 10px; color: var(--faint); text-transform: none; letter-spacing: 0; }
 
 .hint {
   font-size: 10px;
-  color: var(--border);
+  color: var(--faint);
   text-transform: none;
   letter-spacing: 0;
   margin-left: auto;
 }
-
 .hint code {
-  font-family: monospace;
+  font-family: var(--mono);
   background: var(--bg);
   padding: 1px 4px;
   border-radius: 3px;
 }
 
+/* ── 입력 ───────────────────────────────────── */
 .input {
   width: 100%;
-  padding: 10px 12px;
+  padding: 13px 15px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font);
-  font-size: 14px;
+  font-family: var(--serif);
+  font-size: 16px;
   outline: none;
   transition: border-color 0.15s;
 }
+.input:focus { border-color: var(--soft); }
+.input::placeholder { color: var(--faint); }
 
-.input:focus { border-color: var(--text); }
-
-/* Dropzone */
+/* ── 드롭존 ─────────────────────────────────── */
 .dropzone {
   position: relative;
   border: 1px dashed var(--border);
@@ -70,34 +69,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 96px;
+  min-height: 80px;
   transition: border-color 0.15s, background 0.15s;
   overflow: hidden;
 }
-
-.dropzone:hover { border-color: var(--text); }
-
-.dragActive {
-  border-color: var(--text);
-  background: #EDECЕ8;
-}
-
-.hasImage { border-style: solid; min-height: 140px; }
+.dropzone:hover { border-color: var(--soft); }
+.dragActive { border-color: var(--text); background: #ECEAE3; }
+.hasImage   { border-style: solid; min-height: 130px; }
 
 .dropHint {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--faint);
   pointer-events: none;
+  letter-spacing: .04em;
 }
 
 .preview {
   width: 100%;
-  height: 140px;
+  height: 130px;
   object-fit: cover;
   display: block;
 }
 
-.clearBtn {
+.clearImgBtn {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -105,76 +99,74 @@
   height: 24px;
   border: none;
   border-radius: 50%;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0, 0, 0, 0.55);
   color: #fff;
   font-size: 11px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
 }
 
-/* Textarea */
+/* ── 텍스트에어리어 ─────────────────────────── */
 .textarea {
   width: 100%;
-  padding: 12px;
+  flex: 1;
+  padding: 16px 18px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 1.7;
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.85;
   resize: vertical;
   outline: none;
   transition: border-color 0.15s;
 }
+.textarea:focus { border-color: var(--soft); }
+.textarea::placeholder { color: var(--faint); }
 
-.textarea:focus { border-color: var(--text); }
-
-/* 버튼 */
+/* ── 버튼 ───────────────────────────────────── */
 .actions {
-  margin-top: 4px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
-.submitBtn {
-  width: 100%;
-  padding: 13px;
-  background: var(--accent);
-  color: #F4F3EF;
-  border: none;
+.sampleBtn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  font-family: var(--font);
+  background: none;
+  color: var(--soft);
+  font-family: var(--serif);
   font-size: 13px;
-  letter-spacing: 0.06em;
+  letter-spacing: .04em;
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: border-color 0.15s, color 0.15s;
+}
+.sampleBtn:hover {
+  border-color: var(--soft);
+  color: var(--text);
 }
 
-.submitBtn:disabled { opacity: 0.35; cursor: not-allowed; }
-.submitBtn:not(:disabled):hover { opacity: 0.82; }
-
-/* 개발 전용 테스트 버튼 */
-.testBtn {
-  width: 100%;
-  padding: 9px;
-  background: none;
-  color: var(--muted);
+.clearBtn {
+  flex: 0 0 auto;
+  padding: 10px 18px;
   border: 1px dashed var(--border);
   border-radius: var(--radius);
-  font-family: var(--font);
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  background: none;
+  color: var(--faint);
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: .04em;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition: border-color 0.15s, color 0.15s;
 }
-
-.testBtn:not(:disabled):hover {
-  color: var(--text);
+.clearBtn:hover {
   border-color: var(--muted);
+  color: var(--muted);
 }
-
-.testBtn:disabled { opacity: 0.35; cursor: not-allowed; }

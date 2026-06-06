@@ -39,7 +39,11 @@ export default function SettingsPanel({ settings, onChange }) {
         )
       })}
 
-      <p className={styles.hint}>설정은 브라우저에 자동 저장됩니다</p>
+      <p className={styles.hint}>
+        모든 변경은 미리보기에 즉시 반영됩니다.<br />
+        본문·줄간격·여백을 바꾸면 페이지가 다시 나뉩니다.<br />
+        설정은 브라우저에 자동 저장됩니다.
+      </p>
     </div>
   )
 }

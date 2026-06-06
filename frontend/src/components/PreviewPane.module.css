@@ -1,0 +1,188 @@
+/* PreviewPane.module.css */
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── 스테이지 ──────────────────────────────── */
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: var(--stage);
+  padding: 24px 16px;
+}
+
+.pageBox {
+  flex-shrink: 0;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* ── 화살표 버튼 ────────────────────────────── */
+.arrow {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--soft);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.arrow:hover:not(:disabled) {
+  border-color: var(--text);
+  color: var(--text);
+  background: #fff;
+}
+
+.arrow:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+/* ── 도트 내비 ─────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 24px;
+  background: var(--stage);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.navLabel {
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: .14em;
+  color: var(--muted);
+  min-width: 56px;
+  text-align: right;
+}
+
+.navCount {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--faint);
+  min-width: 56px;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: var(--faint);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, width 0.2s, border-radius 0.2s;
+}
+
+.dot[data-active='true'] {
+  width: 18px;
+  border-radius: 3px;
+  background: var(--clay);
+}
+
+/* ── 썸네일 레일 ────────────────────────────── */
+.rail {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.rail::-webkit-scrollbar { height: 4px; }
+.rail::-webkit-scrollbar-track { background: transparent; }
+.rail::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  transition: opacity 0.15s;
+}
+
+.thumb:hover { opacity: 0.85; }
+
+.thumbImg {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  border-radius: 2px;
+  outline: 2px solid transparent;
+  outline-offset: 1px;
+  transition: outline-color 0.15s;
+}
+
+.thumb[data-active='true'] .thumbImg {
+  outline-color: var(--clay);
+}
+
+.thumbNum {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: var(--faint);
+}
+
+.thumb[data-active='true'] .thumbNum {
+  color: var(--clay);
+}
+
+/* ── 빈 상태 ───────────────────────────────── */
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--stage);
+}
+
+.emptyLabel {
+  font-family: var(--serif);
+  font-size: 18px;
+  letter-spacing: .2em;
+  color: var(--faint);
+}
+
+.emptyHint {
+  font-size: 12px;
+  color: var(--faint);
+  letter-spacing: .06em;
+}
