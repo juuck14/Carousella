@@ -127,9 +127,18 @@ export default function App() {
       {/* ── 헤더 ─────────────────────────────── */}
       <header className={styles.header}>
         <div className={styles.brand}>
-          <div className={styles.logo}>평</div>
+          {/* Pagination dots mark */}
+          <div className={styles.logoMark}>
+            <span className={`${styles.dot} ${styles.dotGhost}`} />
+            <span className={styles.dot} />
+            <span className={`${styles.dot} ${styles.dotLead}`} />
+            <span className={styles.dot} />
+            <span className={`${styles.dot} ${styles.dotGhost}`} />
+          </div>
           <div className={styles.brandText}>
-            <span className={styles.brandName}>평론 캐러셀</span>
+            <span className={styles.brandName}>
+              Carousell<span className={styles.brandAccent}>a</span>
+            </span>
             <span className={styles.brandSub}>CRITIQUE&nbsp;CAROUSEL</span>
           </div>
         </div>
