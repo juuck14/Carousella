@@ -228,7 +228,7 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange }) 
         <label className={styles.label}>
           BODY <span className={styles.req}>*</span>
           <span className={styles.hint}>
-            줄바꿈 = 같은 단락 &nbsp;·&nbsp; 빈 줄 = 새 단락 &nbsp;·&nbsp; <code>---</code> = 페이지 분리
+            <code>---</code> = 페이지 분리
           </span>
         </label>
 
