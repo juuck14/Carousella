@@ -74,7 +74,7 @@ export default function App() {
     if (busy || !pages.length) return
     setBusy(true)
     try {
-      const urls = await generateCarousel(doc.title, doc.subtitle, doc.imageFile, doc.body, settings)
+      const urls = await generateCarousel(doc.title, doc.subtitle, doc.label, doc.imageFile, doc.body, settings)
       const url  = urls[safeIdx] ?? urls[0]
       if (!url) throw new Error('생성 실패')
       const a = document.createElement('a')
@@ -92,7 +92,7 @@ export default function App() {
     if (busy || !pages.length) return
     setBusy(true)
     try {
-      const urls = await generateCarousel(doc.title, doc.subtitle, doc.imageFile, doc.body, settings)
+      const urls = await generateCarousel(doc.title, doc.subtitle, doc.label, doc.imageFile, doc.body, settings)
       const zip  = new JSZip()
 
       // PNG 이미지

@@ -59,6 +59,37 @@
 .input:focus { border-color: var(--soft); }
 .input::placeholder { color: var(--faint); }
 
+/* ── 라벨 선택 ──────────────────────────────── */
+.labelPicker {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  width: fit-content;
+}
+
+.labelBtn {
+  padding: 7px 18px;
+  border: none;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.labelBtn:last-child { border-right: none; }
+.labelBtn:hover { background: var(--stage); color: var(--text); }
+
+.labelBtnActive {
+  background: var(--text);
+  color: #F4F3EF;
+}
+.labelBtnActive:hover { background: var(--soft); color: #F4F3EF; }
+
 /* ── 드롭존 ─────────────────────────────────── */
 .dropzone {
   position: relative;
