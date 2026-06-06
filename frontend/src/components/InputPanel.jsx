@@ -13,16 +13,24 @@ import { useDropzone } from 'react-dropzone'
 import { TEST_DATA } from '../lib/testData'
 import styles from './InputPanel.module.css'
 
-// ── 표지 배경 팔레트 ────────────────────────────────────────────────
+// ── 표지 배경 팔레트 (색상환 순서, 채도 있는 다크 톤) ─────────────
 const COVER_PALETTES = [
-  { color: '#141210', label: '먹'  },
-  { color: '#1C1C1C', label: '흑'  },
-  { color: '#1A1A2E', label: '남'  },
-  { color: '#0D1F2D', label: '청'  },
-  { color: '#1A1228', label: '보'  },
-  { color: '#1A2318', label: '녹'  },
-  { color: '#2D231A', label: '갈'  },
-  { color: '#2A1A0A', label: '동'  },
+  // 무채색
+  { color: '#0D0D0D', label: '흑'  },  // 순흑
+  { color: '#18120C', label: '먹'  },  // 따뜻한 먹
+  // 한색 계열
+  { color: '#06243F', label: '남'  },  // 진남
+  { color: '#0A3350', label: '청'  },  // 짙은 청색
+  { color: '#053333', label: '청록' }, // 청록
+  { color: '#08220E', label: '녹'  },  // 짙은 녹색
+  { color: '#1A2A06', label: '초'  },  // 올리브그린
+  // 난색 계열
+  { color: '#350808', label: '적'  },  // 짙은 적색
+  { color: '#3A1400', label: '동'  },  // 구리/녹슨 주황
+  { color: '#261206', label: '갈'  },  // 다크 브라운
+  // 보라 계열
+  { color: '#1A0838', label: '자'  },  // 짙은 자주
+  { color: '#300838', label: '보'  },  // 보라
 ]
 
 // ── 서식 삽입 헬퍼 ────────────────────────────────────────────────

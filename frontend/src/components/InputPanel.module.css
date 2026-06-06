@@ -112,25 +112,34 @@
 /* ── 표지 배경 팔레트 ────────────────────────── */
 .palette {
   display: flex;
-  gap: 7px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-top: 6px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--stage);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 .swatch {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border: 2px solid transparent;
+  border: 2.5px solid transparent;
   cursor: pointer;
   padding: 0;
-  transition: transform 0.12s, border-color 0.12s;
+  transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
   outline: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
 }
-.swatch:hover { transform: scale(1.15); }
+.swatch:hover {
+  transform: scale(1.18);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+}
 .swatchActive {
   border-color: var(--text);
-  transform: scale(1.18);
+  transform: scale(1.22);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 /* ── 서식 툴바 ───────────────────────────────── */
