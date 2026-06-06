@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import JSZip from 'jszip'
 import InputPanel    from './components/InputPanel'
 import PreviewPane   from './components/PreviewPane'
@@ -18,7 +18,7 @@ export default function App() {
 
   // 문서 상태 (InputPanel이 직접 업데이트)
   const [doc, setDocRaw] = useState({
-    title: '', subtitle: '', label: '평론', date: todayStr(),
+    title: '', subtitle: '', label: '음악', date: todayStr(),
     imageFile: null, imageUrl: null, body: '',
   })
   const setDoc = (patch) => setDocRaw(d => ({ ...d, ...patch }))
@@ -31,6 +31,33 @@ export default function App() {
   const [busy,  setBusy]  = useState(false)
   const [toast, setToast] = useState('')
   const flash = (msg) => { setToast(msg); setTimeout(() => setToast(''), 2400) }
+
+  // 사이드바 리사이즈
+  const [sidebarWidth, setSidebarWidth] = useState(460)
+  const dragRef = useRef({ active: false, startX: 0, startW: 0 })
+
+  const onResizeMove = useCallback((e) => {
+    if (!dragRef.current.active) return
+    const dx = e.clientX - dragRef.current.startX
+    setSidebarWidth(Math.max(300, Math.min(720, dragRef.current.startW + dx)))
+  }, [])
+
+  const onResizeEnd = useCallback(() => {
+    dragRef.current.active = false
+    document.removeEventListener('mousemove', onResizeMove)
+    document.removeEventListener('mouseup', onResizeEnd)
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+  }, [onResizeMove])
+
+  function onResizeStart(e) {
+    dragRef.current = { active: true, startX: e.clientX, startW: sidebarWidth }
+    document.addEventListener('mousemove', onResizeMove)
+    document.addEventListener('mouseup', onResizeEnd)
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+    e.preventDefault()
+  }
 
   // 숨겨진 측정용 div ref
   const measureRef = useRef(null)
@@ -47,7 +74,7 @@ export default function App() {
     if (busy || !pages.length) return
     setBusy(true)
     try {
-      const urls = await generateCarousel(doc.title, doc.subtitle, doc.imageFile, doc.body, settings)
+      const urls = await generateCarousel(doc.title, doc.subtitle, doc.label, doc.imageFile, doc.body, settings)
       const url  = urls[safeIdx] ?? urls[0]
       if (!url) throw new Error('생성 실패')
       const a = document.createElement('a')
@@ -65,11 +92,29 @@ export default function App() {
     if (busy || !pages.length) return
     setBusy(true)
     try {
-      const urls = await generateCarousel(doc.title, doc.subtitle, doc.imageFile, doc.body, settings)
+      const urls = await generateCarousel(doc.title, doc.subtitle, doc.label, doc.imageFile, doc.body, settings)
       const zip  = new JSZip()
+
+      // PNG 이미지
       urls.forEach((dataUrl, i) => {
         zip.file(`page_${String(i + 1).padStart(2, '0')}.png`, dataUrl.split(',')[1], { base64: true })
       })
+
+      // 마크다운 파일
+      const mdLines = []
+      if (doc.title)    mdLines.push(`# ${doc.title}`)
+      if (doc.subtitle) mdLines.push(`**${doc.subtitle}**`)
+      if (mdLines.length && doc.body) mdLines.push('')
+      if (doc.body)     mdLines.push(doc.body)
+      zip.file('content.md', mdLines.join('\n'))
+
+      // 첨부 표지 이미지
+      if (doc.imageFile) {
+        const ext     = doc.imageFile.name.split('.').pop() || 'jpg'
+        const imgData = await doc.imageFile.arrayBuffer()
+        zip.file(`cover.${ext}`, imgData)
+      }
+
       const blob    = await zip.generateAsync({ type: 'blob' })
       const zipUrl  = URL.createObjectURL(blob)
       const a       = document.createElement('a')
@@ -77,7 +122,7 @@ export default function App() {
       a.download    = 'carousel.zip'
       a.click()
       URL.revokeObjectURL(zipUrl)
-      flash(`${urls.length}장을 ZIP으로 내보냈습니다`)
+      flash(`${urls.length}장 + 원고를 ZIP으로 내보냈습니다`)
     } catch {
       flash('내보내기에 실패했습니다')
     }
@@ -100,18 +145,27 @@ export default function App() {
       {/* ── 헤더 ─────────────────────────────── */}
       <header className={styles.header}>
         <div className={styles.brand}>
-          <div className={styles.logo}>평</div>
+          {/* Pagination dots mark */}
+          <div className={styles.logoMark}>
+            <span className={`${styles.dot} ${styles.dotGhost}`} />
+            <span className={styles.dot} />
+            <span className={`${styles.dot} ${styles.dotLead}`} />
+            <span className={styles.dot} />
+            <span className={`${styles.dot} ${styles.dotGhost}`} />
+          </div>
           <div className={styles.brandText}>
-            <span className={styles.brandName}>평론 캐러셀</span>
+            <span className={styles.brandName}>
+              Carousell<span className={styles.brandAccent}>a</span>
+            </span>
             <span className={styles.brandSub}>CRITIQUE&nbsp;CAROUSEL</span>
           </div>
         </div>
 
         <nav className={styles.tabs}>
-          {[['write', '작성'], ['settings', '설정']].map(([k, label]) => (
+          {[['write', '작성'], ['preview', '미리보기'], ['settings', '설정']].map(([k, label]) => (
             <button
               key={k}
-              className={styles.tabBtn}
+              className={`${styles.tabBtn} ${k === 'preview' ? styles.mobileOnly : ''}`}
               data-active={tab === k}
               onClick={() => setTab(k)}
             >
@@ -124,15 +178,24 @@ export default function App() {
       {/* ── 바디 ─────────────────────────────── */}
       <div className={styles.body}>
         {/* 사이드바 */}
-        <aside className={styles.sidebar}>
+        <aside
+          className={`${styles.sidebar} ${tab === 'preview' ? styles.mobileHidden : ''}`}
+          style={{ width: `${sidebarWidth}px` }}
+        >
           {tab === 'settings'
             ? <SettingsPanel settings={settings} onChange={updateSettings} />
-            : <InputPanel    doc={doc} setDoc={setDoc} />
+            : <InputPanel    doc={doc} setDoc={setDoc} settings={settings} onSettingsChange={updateSettings} />
           }
         </aside>
 
+        {/* 리사이즈 핸들 */}
+        <div
+          className={`${styles.resizeHandle} ${tab === 'preview' ? styles.mobileHidden : ''}`}
+          onMouseDown={onResizeStart}
+        />
+
         {/* 메인 */}
-        <main className={styles.main}>
+        <main className={`${styles.main} ${tab !== 'preview' ? styles.mobileMainHidden : ''}`}>
           {/* 내보내기 툴바 */}
           <div className={styles.toolbar}>
             <div className={styles.toolbarInfo}>

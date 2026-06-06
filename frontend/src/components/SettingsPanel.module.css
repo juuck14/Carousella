@@ -15,14 +15,15 @@
 
 .panelTitle {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .18em;
   color: var(--muted);
   text-transform: uppercase;
 }
 
 .resetBtn {
-  font-size: 11px;
+  font-family: var(--serif);
+  font-size: 12px;
   letter-spacing: .04em;
   color: var(--muted);
   background: none;
@@ -47,14 +48,15 @@
 }
 
 .fieldLabel {
-  font-size: 13px;
+  font-family: var(--serif);
+  font-size: 14px;
   color: var(--text);
   letter-spacing: .02em;
 }
 
 .fieldValue {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--clay);
   font-variant-numeric: tabular-nums;
   min-width: 44px;
@@ -85,7 +87,8 @@
 .slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
 .hint {
-  font-size: 11px;
+  font-family: var(--serif);
+  font-size: 12px;
   color: var(--faint);
   margin-top: 4px;
   letter-spacing: .02em;

@@ -26,21 +26,24 @@
   gap: 14px;
 }
 
-.logo {
-  width: 38px;
-  height: 38px;
-  background: var(--text);
-  color: #F4F3EF;
+/* 페이지네이션 닷 마크 */
+.logoMark {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-family: var(--display);
-  font-size: 20px;
-  font-weight: 700;
-  border-radius: 2px;
+  gap: 5px;
   flex-shrink: 0;
-  letter-spacing: -.01em;
+  padding: 0 4px;
 }
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.dotGhost { background: var(--faint); opacity: .45; }
+.dotLead  { background: var(--clay); }
 
 .brandText {
   display: flex;
@@ -49,12 +52,16 @@
 }
 
 .brandName {
-  font-family: var(--serif);
+  font-family: var(--display);
   font-size: 17px;
-  font-weight: 400;
+  font-weight: 800;
   color: var(--text);
-  letter-spacing: .02em;
+  letter-spacing: -.01em;
   line-height: 1;
+}
+
+.brandAccent {
+  color: var(--clay);
 }
 
 .brandSub {
@@ -121,6 +128,22 @@
   overflow: hidden;
 }
 
+/* 리사이즈 핸들 */
+.resizeHandle {
+  width: 5px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  background: transparent;
+  border-left: 1px solid var(--border);
+  transition: background 0.15s;
+  position: relative;
+  z-index: 10;
+}
+.resizeHandle:hover,
+.resizeHandle:active {
+  background: var(--border);
+}
+
 /* ── 내보내기 툴바 ──────────────────────────── */
 .toolbar {
   height: 58px;
@@ -141,7 +164,7 @@
 
 .pageTotal {
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   letter-spacing: .04em;
 }
@@ -154,7 +177,7 @@
 
 .spec {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .06em;
   color: var(--faint);
 }
@@ -170,7 +193,8 @@
   border-radius: var(--radius);
   background: none;
   color: var(--soft);
-  font-size: 13px;
+  font-family: var(--serif);
+  font-size: 14px;
   letter-spacing: .03em;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
@@ -189,7 +213,8 @@
   border-radius: var(--radius);
   background: var(--text);
   color: #F4F3EF;
-  font-size: 13px;
+  font-family: var(--serif);
+  font-size: 14px;
   letter-spacing: .03em;
   cursor: pointer;
   transition: opacity 0.15s;
@@ -207,7 +232,7 @@
   background: var(--text);
   color: #F4F3EF;
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: .04em;
   padding: 10px 22px;
   border-radius: 24px;
@@ -220,4 +245,66 @@
 @keyframes fadeUp {
   from { opacity: 0; transform: translateX(-50%) translateY(6px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── 모바일 전용 유틸 ─────────────────────────── */
+.mobileOnly { display: none; }
+
+/* ── 모바일 (≤ 768px) ────────────────────────── */
+@media (max-width: 768px) {
+  .mobileOnly { display: block; }
+
+  /* 헤더 */
+  .header {
+    height: 52px;
+    padding: 0 14px;
+  }
+  .logo {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+  .brandSub { display: none; }
+  .brandName { font-size: 15px; }
+
+  /* 탭 */
+  .tabBtn {
+    padding: 0 11px;
+    height: 52px;
+    font-size: 13px;
+  }
+
+  /* 바디: 세로 스택 */
+  .body { flex-direction: column; }
+
+  /* 사이드바: 전체 너비 */
+  .sidebar {
+    width: 100%;
+    flex: 1;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    min-height: 0;
+  }
+
+  /* 메인: 전체 너비 */
+  .main { flex: 1; min-height: 0; }
+
+  /* 모바일 탭 기반 표시/숨김 */
+  .mobileHidden      { display: none; }
+  .mobileMainHidden  { display: none; }
+
+  /* 사이드바 width 고정 무시 */
+  .sidebar { width: 100% !important; }
+
+  /* 툴바 컴팩트 */
+  .toolbar {
+    height: 46px;
+    padding: 0 14px;
+  }
+  .spec        { display: none; }
+  .toolDivider { display: none; }
+  .btnOutline, .btnFill {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
 }

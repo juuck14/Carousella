@@ -7,38 +7,25 @@
  */
 
 import { useLayoutEffect, useState } from 'react'
+import { stripInlineMarkdown } from '../lib/inlineMarkdown'
 
-/** bodyText를 { t:'p'|'break', text? } 배열로 파싱 */
+/**
+ * bodyText를 { t:'p'|'break', text? } 배열로 파싱.
+ * 엔터 한 번(\n) = 새 단락. '---' 단독 줄 = 강제 페이지 분리.
+ */
 function buildBlocks(bodyText) {
-  const normalized = (bodyText || '')
-    .replace(/\r\n/g, '\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
-
+  const normalized = (bodyText || '').replace(/\r\n/g, '\n').trim()
   if (!normalized) return []
 
   const blocks = []
-  for (const block of normalized.split('\n\n')) {
-    const trimmed = block.trim()
-    if (!trimmed) continue
-    const lines = trimmed.split('\n')
-    let cur = []
-    for (const line of lines) {
-      if (line.trim() === '---') {
-        if (cur.length) {
-          const para = cur.join('\n').trim()
-          if (para) blocks.push({ t: 'p', text: para })
-          cur = []
-        }
-        blocks.push({ t: 'break' })
-      } else {
-        cur.push(line)
-      }
+  for (const line of normalized.split('\n')) {
+    const trimmed = line.trim()
+    if (trimmed === '---') {
+      blocks.push({ t: 'break' })
+    } else if (trimmed) {
+      blocks.push({ t: 'p', text: trimmed })
     }
-    if (cur.length) {
-      const para = cur.join('\n').trim()
-      if (para) blocks.push({ t: 'p', text: para })
-    }
+    // 빈 줄은 무시 (빈 줄 여러 개가 들어와도 단락 수 변화 없음)
   }
   return blocks
 }
@@ -80,7 +67,7 @@ export function usePagination(bodyText, cfg, measureRef) {
     ].join(';')
 
     const measureH = (text) => {
-      el.textContent = text
+      el.textContent = stripInlineMarkdown(text)
       return el.offsetHeight
     }
 

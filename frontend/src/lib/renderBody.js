@@ -9,6 +9,24 @@
  */
 
 import { setFont, drawTextLine } from './canvasUtils'
+import { parseInline } from './inlineMarkdown'
+
+/**
+ * 인라인 마크다운을 파싱해 캔버스에 그리기.
+ * bold → font-weight:700, italic → font-style:italic.
+ * letterSpacing은 무시(ctx.letterSpacing은 Chromium만 지원).
+ */
+function drawInlineLine(ctx, x, y, text, fontSize) {
+  const segs = parseInline(text)
+  let cx = x
+  for (const seg of segs) {
+    const weight = seg.t === 'bold' ? 700 : 400
+    const style  = seg.t === 'em'   ? 'italic ' : ''
+    ctx.font = `${style}${weight} ${fontSize}px "Noto Serif KR"`
+    ctx.fillText(seg.s, cx, y)
+    cx += ctx.measureText(seg.s).width
+  }
+}
 
 export function renderBody(ctx, pageEntries, pageNum, cfg) {
   const {
@@ -39,7 +57,7 @@ export function renderBody(ctx, pageEntries, pageNum, cfg) {
 
   for (const [text] of pageEntries) {
     if (text.trim()) {
-      drawTextLine(ctx, margin, y, text, letterSpacing)
+      drawInlineLine(ctx, margin, y, text, bodyFontSize)
       y += lineH
     } else {
       y += paraGapH        // 단락 간격

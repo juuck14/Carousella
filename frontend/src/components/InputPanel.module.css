@@ -17,7 +17,7 @@
 
 .label {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .18em;
   color: var(--muted);
   text-transform: uppercase;
@@ -26,11 +26,11 @@
   gap: 6px;
 }
 
-.req  { color: var(--text); font-size: 12px; letter-spacing: 0; }
-.opt  { font-size: 10px; color: var(--faint); text-transform: none; letter-spacing: 0; }
+.req  { color: var(--text); font-size: 13px; letter-spacing: 0; }
+.opt  { font-size: 11px; color: var(--faint); text-transform: none; letter-spacing: 0; }
 
 .hint {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--faint);
   text-transform: none;
   letter-spacing: 0;
@@ -59,6 +59,37 @@
 .input:focus { border-color: var(--soft); }
 .input::placeholder { color: var(--faint); }
 
+/* ── 라벨 선택 ──────────────────────────────── */
+.labelPicker {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  width: fit-content;
+}
+
+.labelBtn {
+  padding: 7px 18px;
+  border: none;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.labelBtn:last-child { border-right: none; }
+.labelBtn:hover { background: var(--stage); color: var(--text); }
+
+.labelBtnActive {
+  background: var(--text);
+  color: #F4F3EF;
+}
+.labelBtnActive:hover { background: var(--soft); color: #F4F3EF; }
+
 /* ── 드롭존 ─────────────────────────────────── */
 .dropzone {
   position: relative;
@@ -78,7 +109,7 @@
 .hasImage   { border-style: solid; min-height: 130px; }
 
 .dropHint {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--faint);
   pointer-events: none;
   letter-spacing: .04em;
@@ -101,12 +132,84 @@
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
+}
+
+/* ── 표지 배경 팔레트 ────────────────────────── */
+.palette {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--stage);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+  outline: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+.swatch:hover {
+  transform: scale(1.18);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+}
+.swatchActive {
+  border-color: var(--text);
+  transform: scale(1.22);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* ── 서식 툴바 ───────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.fmtBtn {
+  width: 30px;
+  height: 26px;
+  border: none;
+  background: none;
+  color: var(--soft);
+  font-family: var(--serif);
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, color 0.1s;
+}
+.fmtBtn:hover {
+  background: var(--stage);
+  color: var(--text);
+}
+
+.fmtDivider {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  margin: 0 3px;
 }
 
 /* ── 텍스트에어리어 ─────────────────────────── */
@@ -115,7 +218,7 @@
   flex: 1;
   padding: 16px 18px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 0 0 var(--radius) var(--radius);
   background: var(--bg);
   color: var(--text);
   font-family: var(--serif);
@@ -143,7 +246,7 @@
   background: none;
   color: var(--soft);
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: .04em;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
@@ -161,7 +264,7 @@
   background: none;
   color: var(--faint);
   font-family: var(--serif);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: .04em;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
