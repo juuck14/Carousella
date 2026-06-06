@@ -1,9 +1,9 @@
-# 평론 캐러셀
+# Carousella
 
 인스타그램 캐러셀 이미지(1080×1080 PNG)를 브라우저에서 바로 만드는 웹 앱.  
-텍스트를 입력하면 실시간으로 미리보기가 생성되고, PNG 또는 ZIP으로 내보낼 수 있다.
+음악·영화 등 콘텐츠 평론을 슬라이드로 정리해 인스타그램에 바로 올릴 수 있다.
 
-**라이브**: https://juuck14.github.io/instagram-carousel-generator/
+**라이브**: https://juuck14.github.io/Carousella/
 
 ---
 
@@ -14,11 +14,17 @@
 | **실시간 미리보기** | 타이핑하는 즉시 페이지 분할 및 렌더링 갱신 |
 | **자동 페이지 분할** | 텍스트 높이를 DOM으로 측정해 1080px 기준 자동 분할 |
 | **강제 페이지 분리** | 본문에 `---` 입력 시 해당 위치에서 페이지 강제 분리 |
+| **인라인 마크다운** | `**굵게**`, `*기울임*` 문법 지원 (미리보기 + 내보내기 동시 적용) |
+| **라벨 선택** | 음악 / 영화 / 기타 중 선택 → 표지 좌상단에 표시 |
 | **표지 이미지** | 드래그 앤 드롭 또는 클릭으로 업로드, cover-fit 적용 |
+| **표지 배경색** | 8가지 다크 팔레트에서 선택 |
+| **텍스트 서식 툴바** | Bold / Italic / 페이지 구분선 버튼 + Ctrl+B / Ctrl+I 단축키 |
 | **PNG 내보내기** | 현재 페이지 단건 / 전체 ZIP 일괄 다운로드 |
+| **ZIP 내보내기** | PNG 전체 + `content.md`(원고) + 표지 이미지를 한 번에 묶어 제공 |
 | **디자인 설정** | 폰트 크기·줄간격·여백·표지 비율 등 슬라이더로 실시간 조정 |
 | **설정 자동 저장** | 조정한 설정을 브라우저 로컬스토리지에 저장 |
-| **키보드 내비** | ← → 키로 페이지 이동 |
+| **사이드바 리사이즈** | 드래그로 입력창 너비 조절 (데스크톱) |
+| **모바일 지원** | 작성 / 미리보기 / 설정 탭 전환 레이아웃 |
 
 ---
 
@@ -26,11 +32,11 @@
 
 | 요소 | 스펙 |
 |------|------|
-| 표지 배경 | `#141210` (딥 블랙) |
+| 표지 배경 | `#141210` (딥 블랙) 외 7종 팔레트 |
 | 본문 배경 | `#F4F3EF` (따뜻한 아이보리) |
 | 표지 제목 폰트 | Nanum Myeongjo 700 (Display) |
 | 본문 폰트 | Noto Serif KR 400 |
-| 강조 색상 | `#A8643F` (Clay / 테라코타) |
+| 강조 색상 | `#A8442E` (Clay / 테라코타) |
 | 기본 본문 크기 | 30px |
 | 기본 표지 제목 크기 | 64px |
 | 캔버스 크기 | 1080 × 1080 px |
@@ -70,6 +76,8 @@ npm run dev
 
 위 줄(---)은 강제 페이지 분리.
 아래 내용은 무조건 다음 페이지에 시작된다.
+
+**굵은 텍스트**와 *기울임 텍스트*도 지원한다.
 ```
 
 ---
@@ -77,8 +85,10 @@ npm run dev
 ## 내보내기
 
 - **이 페이지 PNG**: 현재 보고 있는 페이지를 1080×1080 PNG로 다운로드
-- **전체 내보내기**: 모든 페이지를 `carousel.zip`으로 일괄 다운로드  
-  파일명: `page_01.png`, `page_02.png`, …
+- **전체 내보내기**: `carousel.zip`으로 일괄 다운로드
+  - `page_01.png`, `page_02.png`, … — 캐러셀 이미지 전체
+  - `content.md` — 제목·부제목·본문 원고 마크다운
+  - `cover.jpg` (업로드한 경우) — 표지 이미지 원본
 
 내보내기는 Canvas API로 렌더링하므로 미리보기와 동일한 레이아웃·폰트가 적용된다.
 
@@ -98,16 +108,17 @@ frontend/
 │   ├── lib/
 │   │   ├── defaultConfig.js    # 기본 설정값 + 슬라이더 필드 정의
 │   │   ├── testData.js         # 샘플 텍스트 데이터
+│   │   ├── inlineMarkdown.js   # **bold** / *italic* 파싱
 │   │   ├── generate.js         # Canvas 내보내기 진입점
 │   │   ├── renderCover.js      # 표지 Canvas 렌더러
-│   │   ├── renderBody.js       # 본문 Canvas 렌더러
+│   │   ├── renderBody.js       # 본문 Canvas 렌더러 (인라인 마크다운 포함)
 │   │   ├── layout.js           # Canvas 기반 페이지 분할 (내보내기 전용)
 │   │   ├── parseText.js        # 본문 파싱 (단락 / 페이지 브레이크)
 │   │   └── canvasUtils.js      # Canvas 폰트·텍스트 유틸
 │   └── components/
 │       ├── CarouselPage.jsx    # React 기반 캐러셀 페이지 렌더러 (미리보기)
 │       ├── PreviewPane.jsx     # 스테이지 + 화살표 + 도트 + 썸네일 레일
-│       ├── InputPanel.jsx      # 입력 사이드바
+│       ├── InputPanel.jsx      # 입력 사이드바 (라벨·이미지·팔레트·서식 툴바)
 │       └── SettingsPanel.jsx   # 디자인 설정 슬라이더
 .github/workflows/
 └── deploy.yml                  # GitHub Pages 수동 배포 (workflow_dispatch)
@@ -132,10 +143,10 @@ frontend/
 ## 릴리즈 절차
 
 ```bash
-# 1. 개발 완료 후 main에 커밋·푸시 (배포 없음)
-git push origin main
+# 1. dev → main 머지
+git checkout main && git merge --no-ff dev
 
-# 2. 릴리즈 태그 + 릴리즈 노트 작성
+# 2. 릴리즈 태그 생성
 gh release create v1.x.x --title "v1.x.x" --notes "변경 내용..."
 
 # 3. GitHub Pages 배포 트리거

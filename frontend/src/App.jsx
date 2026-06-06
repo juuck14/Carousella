@@ -18,7 +18,7 @@ export default function App() {
 
   // 문서 상태 (InputPanel이 직접 업데이트)
   const [doc, setDocRaw] = useState({
-    title: '', subtitle: '', label: '평론', date: todayStr(),
+    title: '', subtitle: '', label: '음악', date: todayStr(),
     imageFile: null, imageUrl: null, body: '',
   })
   const setDoc = (patch) => setDocRaw(d => ({ ...d, ...patch }))
