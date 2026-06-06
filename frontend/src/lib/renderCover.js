@@ -96,7 +96,7 @@ export function renderCover(ctx, title, subtitle, label, coverImg, cfg) {
   // ── 제목 + 부제목 — 이미지 위쪽 바닥에 정렬 ──────────────
   const tw = canvasSize - margin * 2   // 텍스트 너비 (width 기준)
 
-  ctx.font = `700 ${coverTitleSize}px "Nanum Myeongjo", "Noto Serif KR", serif`
+  ctx.font = `400 ${coverTitleSize}px "Nanum Myeongjo", "Noto Serif KR", serif`
   const titleLines  = wrapParagraph(ctx, title || '제목을 입력하세요', tw, 0)
   const titleLineH  = Math.round(coverTitleSize * 1.22)
   const titleBlockH = titleLines.length * titleLineH
@@ -113,7 +113,7 @@ export function renderCover(ctx, title, subtitle, label, coverImg, cfg) {
   let ty = blockBottom - titleBlockH - subBlockH
 
   // 제목 (Nanum Myeongjo)
-  ctx.font         = `700 ${coverTitleSize}px "Nanum Myeongjo", "Noto Serif KR", serif`
+  ctx.font         = `400 ${coverTitleSize}px "Nanum Myeongjo", "Noto Serif KR", serif`
   ctx.fillStyle    = coverTextColor   // '#F4F3EF'
   ctx.textBaseline = 'top'
   ctx.letterSpacing = '-0.01em'
