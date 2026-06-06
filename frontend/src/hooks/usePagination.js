@@ -11,22 +11,33 @@ import { stripInlineMarkdown } from '../lib/inlineMarkdown'
 
 /**
  * bodyText를 { t:'p'|'break', text? } 배열로 파싱.
- * 엔터 한 번(\n) = 새 단락. '---' 단독 줄 = 강제 페이지 분리.
+ * - 엔터 한 번(\n) = 같은 단락 내 줄바꿈 (단락 간격 없음)
+ * - 빈 줄(\n\n) = 새 단락
+ * - '---' 단독 줄 = 강제 페이지 분리
  */
 function buildBlocks(bodyText) {
-  const normalized = (bodyText || '').replace(/\r\n/g, '\n').trim()
-  if (!normalized) return []
+  const normalized = (bodyText || '').replace(/\r\n/g, '\n')
+  if (!normalized.trim()) return []
 
   const blocks = []
-  for (const line of normalized.split('\n')) {
-    const trimmed = line.trim()
-    if (trimmed === '---') {
-      blocks.push({ t: 'break' })
-    } else if (trimmed) {
-      blocks.push({ t: 'p', text: trimmed })
-    }
-    // 빈 줄은 무시 (빈 줄 여러 개가 들어와도 단락 수 변화 없음)
+  const lines = normalized.split('\n')
+  let cur = []
+
+  const flush = () => {
+    if (cur.length) { blocks.push({ t: 'p', text: cur.join('\n') }); cur = [] }
   }
+
+  for (const line of lines) {
+    if (line.trim() === '---') {
+      flush()
+      blocks.push({ t: 'break' })
+    } else if (line.trim() === '') {
+      flush()
+    } else {
+      cur.push(line)
+    }
+  }
+  flush()
   return blocks
 }
 
@@ -55,7 +66,7 @@ export function usePagination(bodyText, cfg, measureRef) {
       `font-family:'Noto Serif KR',serif`,
       `word-break:keep-all`,
       `text-align:justify`,
-      `white-space:normal`,
+      `white-space:pre-line`,
       `box-sizing:content-box`,
       `padding:0`,
       `margin:0`,
@@ -71,7 +82,11 @@ export function usePagination(bodyText, cfg, measureRef) {
       return el.offsetHeight
     }
 
-    const blocks    = buildBlocks(bodyText)
+    const blocks = buildBlocks(bodyText)
+
+    // 마지막에 □ 단락 추가
+    if (blocks.length > 0) blocks.push({ t: 'p', text: '□' })
+
     const bodyPages = []
     let cur = [], h = 0
 
@@ -89,10 +104,21 @@ export function usePagination(bodyText, cfg, measureRef) {
       if (cur.length && h + addH > maxH) flush()
 
       cur.push(b.text)
-      // push 후 cur.length가 2 이상이어야 gap 추가 (첫 단락은 gap 없음)
       h += (cur.length > 1 ? gap : 0) + ph
     }
     flush()
+
+    // □가 혼자 마지막 페이지에 있으면 → 이전 페이지 마지막 단락에 ' □' 붙임
+    if (bodyPages.length > 0) {
+      const lastPage = bodyPages[bodyPages.length - 1]
+      if (lastPage.length === 1 && lastPage[0] === '□') {
+        bodyPages.pop()
+        if (bodyPages.length > 0) {
+          const prev = bodyPages[bodyPages.length - 1]
+          prev[prev.length - 1] += ' □'
+        }
+      }
+    }
 
     setPages([
       { type: 'cover' },

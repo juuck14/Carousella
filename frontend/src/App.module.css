@@ -53,7 +53,7 @@
 
 .brandName {
   font-family: var(--display);
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--text);
   letter-spacing: -.01em;
@@ -62,14 +62,6 @@
 
 .brandAccent {
   color: var(--clay);
-}
-
-.brandSub {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .22em;
-  color: var(--faint);
-  line-height: 1;
 }
 
 /* 탭 내비 */
@@ -264,8 +256,7 @@
     height: 30px;
     font-size: 16px;
   }
-  .brandSub { display: none; }
-  .brandName { font-size: 15px; }
+  .brandName { font-size: 18px; }
 
   /* 탭 */
   .tabBtn {
