@@ -72,6 +72,11 @@ export function usePagination(bodyText, cfg, measureRef) {
       `box-sizing:content-box`,
       `padding:0`,
       `margin:0`,
+      `position:fixed`,
+      `left:-99999px`,
+      `top:0`,
+      `visibility:hidden`,
+      `pointer-events:none`,
     ].join(';')
 
     const measureH = (text) => {
