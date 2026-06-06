@@ -1,0 +1,93 @@
+.panel {
+  padding: 28px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panelTitle {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.resetBtn {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: color 0.1s, border-color 0.1s;
+}
+
+.resetBtn:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.fieldLabel {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.fieldValue {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 40px;
+  text-align: right;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.hint {
+  font-size: 10px;
+  color: var(--border);
+  margin-top: 8px;
+}

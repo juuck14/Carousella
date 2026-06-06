@@ -23,8 +23,8 @@ outputs/
 .DS_Store
 Thumbs.db
 
-# 구버전 (backend/로 이전됨)
-src/
+# 구버전 루트 src/ 폴더 (backend/로 이전됨)
+/src/
 
 # IDE
 .vscode/

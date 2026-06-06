@@ -133,7 +133,12 @@
 .textarea:focus { border-color: var(--text); }
 
 /* 버튼 */
-.actions { margin-top: 4px; }
+.actions {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
 .submitBtn {
   width: 100%;
@@ -151,3 +156,25 @@
 
 .submitBtn:disabled { opacity: 0.35; cursor: not-allowed; }
 .submitBtn:not(:disabled):hover { opacity: 0.82; }
+
+/* 개발 전용 테스트 버튼 */
+.testBtn {
+  width: 100%;
+  padding: 9px;
+  background: none;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.testBtn:not(:disabled):hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.testBtn:disabled { opacity: 0.35; cursor: not-allowed; }
