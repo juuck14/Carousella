@@ -2,61 +2,43 @@ import { useState, useCallback } from 'react'
 import InputPanel from './components/InputPanel'
 import PreviewPanel from './components/PreviewPanel'
 import SettingsPanel from './components/SettingsPanel'
+import { generateCarousel } from './lib/generate'
+import { DEFAULT_CONFIG } from './lib/defaultConfig'
 import styles from './App.module.css'
 
-// 설정 기본값 (backend/config.py DEFAULT_CFG와 동기화)
-export const DEFAULT_SETTINGS = {
-  body_font_size:    22,
-  line_spacing:      2.05,
-  para_spacing:      0.9,
-  letter_spacing:    0,
-  margin:            120,
-  cover_split_ratio: 0.42,
-  cover_title_size:  48,
-}
+export { DEFAULT_CONFIG }   // SettingsPanel에서 재사용
 
 function loadSettings() {
   try {
     const raw = localStorage.getItem('carousel_settings')
-    if (!raw) return DEFAULT_SETTINGS
-    return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) }
+    if (!raw) return DEFAULT_CONFIG
+    return { ...DEFAULT_CONFIG, ...JSON.parse(raw) }
   } catch {
-    return DEFAULT_SETTINGS
+    return DEFAULT_CONFIG
   }
 }
 
 export default function App() {
-  const [pages,    setPages]    = useState([])
-  const [loading,  setLoading]  = useState(false)
-  const [error,    setError]    = useState('')
-  const [settings, setSettings] = useState(loadSettings)
-  const [sessionId, setSessionId] = useState('')
+  const [pages,        setPages]        = useState([])   // data URL 배열
+  const [loading,      setLoading]      = useState(false)
+  const [error,        setError]        = useState('')
+  const [settings,     setSettings]     = useState(loadSettings)
   const [showSettings, setShowSettings] = useState(false)
 
-  const handleSettingsChange = useCallback((newSettings) => {
-    setSettings(newSettings)
-    localStorage.setItem('carousel_settings', JSON.stringify(newSettings))
+  const handleSettingsChange = useCallback((next) => {
+    setSettings(next)
+    localStorage.setItem('carousel_settings', JSON.stringify(next))
   }, [])
 
-  async function handleGenerate(formData) {
-    // 설정값을 JSON으로 추가
-    formData.append('settings', JSON.stringify(settings))
-
+  async function handleGenerate({ title, subtitle, body, imageFile }) {
     setLoading(true)
     setError('')
     setPages([])
-    setSessionId('')
     try {
-      const res = await fetch('/api/generate', { method: 'POST', body: formData })
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}))
-        throw new Error(err.detail || `서버 오류 (${res.status})`)
-      }
-      const data = await res.json()
-      setPages(data.pages)
-      setSessionId(data.session_id)
+      const urls = await generateCarousel(title, subtitle, imageFile, body, settings)
+      setPages(urls)
     } catch (e) {
-      setError(e.message)
+      setError(e.message || '이미지 생성 중 오류가 발생했습니다.')
     } finally {
       setLoading(false)
     }
@@ -83,12 +65,7 @@ export default function App() {
       </aside>
 
       <main className={styles.main}>
-        <PreviewPanel
-          pages={pages}
-          loading={loading}
-          error={error}
-          sessionId={sessionId}
-        />
+        <PreviewPanel pages={pages} loading={loading} error={error} />
       </main>
     </div>
   )

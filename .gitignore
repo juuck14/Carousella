@@ -29,3 +29,9 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# 폐기된 Python 백엔드 (JS 전환 후 불필요)
+backend/
+dev-frontend.cmd
+inputs/
+test.md

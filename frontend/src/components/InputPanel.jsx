@@ -16,11 +16,9 @@ const TEST_DATA = {
 
 ---
 
-나는 이 글을 쓰면서, 내가 처음으로 라디오헤드의 "Paranoid Android"를 들었던 2015년 1월(혹은 2월)의 어느날 밤 자기 직전 순간을 떠올렸다.
+나는 이 글을 쓰면서, 내가 처음으로 라디오헤드의 "Paranoid Android"를 들었던 2015년 1월의 어느날 밤 자기 직전 순간을 떠올렸다. 나는 그날 밤을 여전히 내 인생이 완전히 뒤바뀐 날로 생각하고 있다.
 
-그날 나는 잠을 거의 자지 못했다. 그건 한마디로 쇼크였다. 나는 그날 밤을 여전히 내 인생이 완전히 뒤바뀐 날로 생각하고 있다.
-
-하지만 불행하게도 <Velocity : Design : Comfort>는 내 인생을 거의 바꾸지 못했다. 라디오헤드는 "Paranoid Android" 말고도 그들의 모든 앨범이 하나의 거대하고도 완전히 새로운 세계의 지평을 열어젖혔던 반면에, <Velocity : Design : Comfort>는 단지 그 앨범에서 세계가 끝나버렸기 때문이다.
+하지만 불행하게도 <Velocity : Design : Comfort>는 내 인생을 거의 바꾸지 못했다. 라디오헤드는 하나의 거대하고도 완전히 새로운 세계의 지평을 열어젖혔던 반면에, <Velocity : Design : Comfort>는 단지 그 앨범에서 세계가 끝나버렸기 때문이다.
 
 ---
 
@@ -30,13 +28,12 @@ const TEST_DATA = {
 }
 
 export default function InputPanel({ onGenerate, loading }) {
-  const [title,    setTitle]    = useState('')
-  const [subtitle, setSubtitle] = useState('')
-  const [body,     setBody]     = useState('')
-  const [imgFile,  setImgFile]  = useState(null)
+  const [title,      setTitle]      = useState('')
+  const [subtitle,   setSubtitle]   = useState('')
+  const [body,       setBody]       = useState('')
+  const [imgFile,    setImgFile]    = useState(null)
   const [imgPreview, setImgPreview] = useState('')
 
-  // react-dropzone
   const onDrop = useCallback((accepted) => {
     const file = accepted[0]
     if (!file) return
@@ -67,14 +64,7 @@ export default function InputPanel({ onGenerate, loading }) {
   function handleSubmit(e) {
     e.preventDefault()
     if (!title.trim() || !body.trim()) return
-
-    const fd = new FormData()
-    fd.append('title',    title)
-    fd.append('subtitle', subtitle)
-    fd.append('body',     body)
-    if (imgFile) fd.append('image', imgFile)
-
-    onGenerate(fd)
+    onGenerate({ title, subtitle, body, imageFile: imgFile })
   }
 
   const canSubmit = title.trim() && body.trim() && !loading
@@ -142,21 +132,12 @@ export default function InputPanel({ onGenerate, loading }) {
         />
       </div>
 
-      {/* 버튼 영역 */}
+      {/* 버튼 */}
       <div className={styles.actions}>
-        <button
-          type="submit"
-          className={styles.submitBtn}
-          disabled={!canSubmit}
-        >
+        <button type="submit" className={styles.submitBtn} disabled={!canSubmit}>
           {loading ? '생성 중...' : '미리보기 생성'}
         </button>
-        <button
-          type="button"
-          className={styles.testBtn}
-          onClick={fillTestData}
-          disabled={loading}
-        >
+        <button type="button" className={styles.testBtn} onClick={fillTestData} disabled={loading}>
           테스트 데이터
         </button>
       </div>
