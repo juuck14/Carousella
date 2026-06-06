@@ -11,6 +11,8 @@
  *   cfg   — DEFAULT_CONFIG 기반 설정
  */
 
+import { parseInline } from '../lib/inlineMarkdown'
+
 const SERIF   = "'Noto Serif KR', serif"
 const DISPLAY = "'Nanum Myeongjo', 'Noto Serif KR', serif"
 const MONO    = "'Courier New', ui-monospace, monospace"
@@ -56,7 +58,11 @@ function Paras({ paras, gap, fontSize, lineHeight }) {
           textAlign: 'justify',
           wordBreak: 'keep-all',
         }}>
-          {p}
+          {parseInline(p).map((seg, j) => {
+            if (seg.t === 'bold') return <strong key={j} style={{ fontWeight: 700 }}>{seg.s}</strong>
+            if (seg.t === 'em')   return <em key={j} style={{ fontStyle: 'italic' }}>{seg.s}</em>
+            return <span key={j}>{seg.s}</span>
+          })}
         </p>
       ))}
     </>
@@ -67,9 +73,10 @@ function Paras({ paras, gap, fontSize, lineHeight }) {
 function CoverA({ doc, cfg }) {
   const m     = cfg.margin
   const split = Math.round(1080 * cfg.coverSplitRatio)
+  const coverBg = cfg.coverBgColor || C.dark
 
   return (
-    <div style={{ position: 'absolute', inset: 0, background: C.dark }}>
+    <div style={{ position: 'absolute', inset: 0, background: coverBg }}>
       {/* 하단 이미지 */}
       <div style={{ position: 'absolute', left: 0, right: 0, top: split, bottom: 0, overflow: 'hidden' }}>
         {doc.imageUrl

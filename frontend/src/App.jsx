@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import JSZip from 'jszip'
 import InputPanel    from './components/InputPanel'
 import PreviewPane   from './components/PreviewPane'
@@ -31,6 +31,33 @@ export default function App() {
   const [busy,  setBusy]  = useState(false)
   const [toast, setToast] = useState('')
   const flash = (msg) => { setToast(msg); setTimeout(() => setToast(''), 2400) }
+
+  // 사이드바 리사이즈
+  const [sidebarWidth, setSidebarWidth] = useState(460)
+  const dragRef = useRef({ active: false, startX: 0, startW: 0 })
+
+  const onResizeMove = useCallback((e) => {
+    if (!dragRef.current.active) return
+    const dx = e.clientX - dragRef.current.startX
+    setSidebarWidth(Math.max(300, Math.min(720, dragRef.current.startW + dx)))
+  }, [])
+
+  const onResizeEnd = useCallback(() => {
+    dragRef.current.active = false
+    document.removeEventListener('mousemove', onResizeMove)
+    document.removeEventListener('mouseup', onResizeEnd)
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+  }, [onResizeMove])
+
+  function onResizeStart(e) {
+    dragRef.current = { active: true, startX: e.clientX, startW: sidebarWidth }
+    document.addEventListener('mousemove', onResizeMove)
+    document.addEventListener('mouseup', onResizeEnd)
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+    e.preventDefault()
+  }
 
   // 숨겨진 측정용 div ref
   const measureRef = useRef(null)
@@ -108,10 +135,10 @@ export default function App() {
         </div>
 
         <nav className={styles.tabs}>
-          {[['write', '작성'], ['settings', '설정']].map(([k, label]) => (
+          {[['write', '작성'], ['preview', '미리보기'], ['settings', '설정']].map(([k, label]) => (
             <button
               key={k}
-              className={styles.tabBtn}
+              className={`${styles.tabBtn} ${k === 'preview' ? styles.mobileOnly : ''}`}
               data-active={tab === k}
               onClick={() => setTab(k)}
             >
@@ -124,15 +151,24 @@ export default function App() {
       {/* ── 바디 ─────────────────────────────── */}
       <div className={styles.body}>
         {/* 사이드바 */}
-        <aside className={styles.sidebar}>
+        <aside
+          className={`${styles.sidebar} ${tab === 'preview' ? styles.mobileHidden : ''}`}
+          style={{ width: `${sidebarWidth}px` }}
+        >
           {tab === 'settings'
             ? <SettingsPanel settings={settings} onChange={updateSettings} />
-            : <InputPanel    doc={doc} setDoc={setDoc} />
+            : <InputPanel    doc={doc} setDoc={setDoc} settings={settings} onSettingsChange={updateSettings} />
           }
         </aside>
 
+        {/* 리사이즈 핸들 */}
+        <div
+          className={`${styles.resizeHandle} ${tab === 'preview' ? styles.mobileHidden : ''}`}
+          onMouseDown={onResizeStart}
+        />
+
         {/* 메인 */}
-        <main className={styles.main}>
+        <main className={`${styles.main} ${tab !== 'preview' ? styles.mobileMainHidden : ''}`}>
           {/* 내보내기 툴바 */}
           <div className={styles.toolbar}>
             <div className={styles.toolbarInfo}>

@@ -109,13 +109,76 @@
   line-height: 1;
 }
 
+/* ── 표지 배경 팔레트 ────────────────────────── */
+.palette {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.12s, border-color 0.12s;
+  outline: none;
+}
+.swatch:hover { transform: scale(1.15); }
+.swatchActive {
+  border-color: var(--text);
+  transform: scale(1.18);
+}
+
+/* ── 서식 툴바 ───────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.fmtBtn {
+  width: 30px;
+  height: 26px;
+  border: none;
+  background: none;
+  color: var(--soft);
+  font-family: var(--serif);
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, color 0.1s;
+}
+.fmtBtn:hover {
+  background: var(--stage);
+  color: var(--text);
+}
+
+.fmtDivider {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  margin: 0 3px;
+}
+
 /* ── 텍스트에어리어 ─────────────────────────── */
 .textarea {
   width: 100%;
   flex: 1;
   padding: 16px 18px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 0 0 var(--radius) var(--radius);
   background: var(--bg);
   color: var(--text);
   font-family: var(--serif);

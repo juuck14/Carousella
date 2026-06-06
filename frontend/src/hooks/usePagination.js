@@ -7,6 +7,7 @@
  */
 
 import { useLayoutEffect, useState } from 'react'
+import { stripInlineMarkdown } from '../lib/inlineMarkdown'
 
 /** bodyText를 { t:'p'|'break', text? } 배열로 파싱 */
 function buildBlocks(bodyText) {
@@ -80,7 +81,7 @@ export function usePagination(bodyText, cfg, measureRef) {
     ].join(';')
 
     const measureH = (text) => {
-      el.textContent = text
+      el.textContent = stripInlineMarkdown(text)
       return el.offsetHeight
     }
 
