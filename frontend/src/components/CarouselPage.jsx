@@ -116,7 +116,7 @@ function CoverA({ doc, cfg }) {
       <div style={{ position: 'absolute', left: m, right: m, top: m + 56, height: 1, background: C.ruleDk }} />
 
       {/* 제목 + 부제목 — 이미지 영역 위쪽 */}
-      <div style={{ position: 'absolute', left: m, right: m, bottom: (1080 - split) + 60 }}>
+      <div style={{ position: 'absolute', left: m, right: m, bottom: (canvasH - split) + 60 }}>
         <div style={{
           fontFamily: DISPLAY, fontSize: cfg.coverTitleSize, lineHeight: 1.22,
           color: C.ivory, whiteSpace: 'pre-line', letterSpacing: '-.01em', wordBreak: 'keep-all',
