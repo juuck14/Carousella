@@ -5,6 +5,7 @@ import PreviewPane   from './components/PreviewPane'
 import SettingsPanel from './components/SettingsPanel'
 import { useSettings }   from './hooks/useSettings'
 import { usePagination } from './hooks/usePagination'
+import { useDrafts }     from './hooks/useDrafts'
 import { generateCarousel } from './lib/generate'
 import styles from './App.module.css'
 
@@ -15,6 +16,7 @@ function todayStr() {
 
 export default function App() {
   const { settings, update: updateSettings } = useSettings()
+  const { drafts, saveDraft, deleteDraft }   = useDrafts()
 
   // 문서 상태 (InputPanel이 직접 업데이트)
   const [doc, setDocRaw] = useState({
@@ -183,7 +185,32 @@ export default function App() {
         >
           {tab === 'settings'
             ? <SettingsPanel settings={settings} onChange={updateSettings} />
-            : <InputPanel    doc={doc} setDoc={setDoc} settings={settings} onSettingsChange={updateSettings} />
+            : <InputPanel
+              doc={doc}
+              setDoc={setDoc}
+              settings={settings}
+              onSettingsChange={updateSettings}
+              drafts={drafts}
+              onSaveDraft={() => {
+                const result = saveDraft(doc, settings)
+                if (!result.ok) flash('저장 공간이 부족합니다')
+                else if (result.imageDropped) flash('임시저장 완료 (용량 초과로 이미지 제외)')
+                else flash('임시저장 완료')
+              }}
+              onLoadDraft={(draft) => {
+                setDoc({
+                  title:     draft.doc.title,
+                  subtitle:  draft.doc.subtitle,
+                  label:     draft.doc.label,
+                  imageUrl:  draft.doc.imageUrl,
+                  imageFile: null,
+                  body:      draft.doc.body,
+                })
+                if (draft.settings) updateSettings(draft.settings)
+                flash('불러왔습니다')
+              }}
+              onDeleteDraft={deleteDraft}
+            />
           }
         </aside>
 

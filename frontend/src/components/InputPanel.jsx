@@ -8,7 +8,7 @@
  *   onSettingsChange — (newSettings) => void
  */
 
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { TEST_DATA } from '../lib/testData'
 import styles from './InputPanel.module.css'
@@ -75,8 +75,15 @@ function insertFormat(textarea, marker) {
   textarea.focus()
 }
 
-export default function InputPanel({ doc, setDoc, settings, onSettingsChange }) {
-  const textareaRef = useRef(null)
+function formatSavedAt(iso) {
+  const d = new Date(iso)
+  const pad = n => String(n).padStart(2, '0')
+  return `${d.getMonth() + 1}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+
+export default function InputPanel({ doc, setDoc, settings, onSettingsChange, drafts = [], onSaveDraft, onLoadDraft, onDeleteDraft }) {
+  const textareaRef  = useRef(null)
+  const [draftOpen, setDraftOpen] = useState(false)
 
   // 이미지 드롭/클릭 처리
   const onDrop = useCallback((accepted) => {
@@ -291,12 +298,61 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange }) 
 
       {/* 하단 버튼 */}
       <div className={styles.actions}>
+        <button type="button" className={styles.saveBtn} onClick={onSaveDraft}>
+          임시저장
+        </button>
         <button type="button" className={styles.sampleBtn} onClick={loadSample}>
-          샘플 불러오기
+          샘플
         </button>
         <button type="button" className={styles.clearBtn} onClick={clearAll}>
           비우기
         </button>
+      </div>
+
+      {/* 임시저장 목록 */}
+      <div className={styles.draftSection}>
+        <button
+          type="button"
+          className={styles.draftToggle}
+          onClick={() => setDraftOpen(o => !o)}
+        >
+          <span>임시저장 목록</span>
+          <span className={styles.draftCount}>{drafts.length}</span>
+          <span className={styles.draftChevron}>{draftOpen ? '▲' : '▼'}</span>
+        </button>
+
+        {draftOpen && (
+          <div className={styles.draftList}>
+            {drafts.length === 0 ? (
+              <div className={styles.draftEmpty}>저장된 임시본이 없습니다</div>
+            ) : (
+              drafts.map(draft => (
+                <div key={draft.id} className={styles.draftItem}>
+                  <div className={styles.draftMeta}>
+                    <span className={styles.draftTitle}>{draft.title}</span>
+                    <span className={styles.draftDate}>{formatSavedAt(draft.savedAt)}</span>
+                  </div>
+                  <div className={styles.draftActions}>
+                    <button
+                      type="button"
+                      className={styles.draftLoadBtn}
+                      onClick={() => { onLoadDraft(draft); setDraftOpen(false) }}
+                    >
+                      불러오기
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.draftDelBtn}
+                      onClick={() => onDeleteDraft(draft.id)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
 
     </div>
