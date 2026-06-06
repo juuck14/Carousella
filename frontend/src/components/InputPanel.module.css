@@ -1,0 +1,153 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px 32px 40px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.required { color: var(--text); }
+
+.optional {
+  font-size: 10px;
+  color: var(--border);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.hint {
+  font-size: 10px;
+  color: var(--border);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: auto;
+}
+
+.hint code {
+  font-family: monospace;
+  background: var(--bg);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus { border-color: var(--text); }
+
+/* Dropzone */
+.dropzone {
+  position: relative;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 96px;
+  transition: border-color 0.15s, background 0.15s;
+  overflow: hidden;
+}
+
+.dropzone:hover { border-color: var(--text); }
+
+.dragActive {
+  border-color: var(--text);
+  background: #EDECЕ8;
+}
+
+.hasImage { border-style: solid; min-height: 140px; }
+
+.dropHint {
+  font-size: 12px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.preview {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.clearBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Textarea */
+.textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.textarea:focus { border-color: var(--text); }
+
+/* 버튼 */
+.actions { margin-top: 4px; }
+
+.submitBtn {
+  width: 100%;
+  padding: 13px;
+  background: var(--accent);
+  color: #F4F3EF;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.submitBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+.submitBtn:not(:disabled):hover { opacity: 0.82; }

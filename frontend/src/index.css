@@ -1,0 +1,21 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #F4F3EF;
+  --surface:   #FAFAF7;
+  --border:    #D8D5CE;
+  --text:      #1C1C1C;
+  --muted:     #888880;
+  --accent:    #1C1C1C;
+  --radius:    6px;
+  --font:      'Georgia', 'Batang', serif;
+}
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}

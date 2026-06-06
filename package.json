@@ -1,0 +1,21 @@
+{
+  "name": "carousel-generator",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n FRONT,BACK -c cyan,magenta \"vite\" \"uvicorn backend.main:app --reload --port 8000\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "setup:backend": "pip install fastapi uvicorn python-multipart pillow"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-dropzone": "^14.3.5",
+    "yet-another-react-lightbox": "^3.21.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "vite": "^6.0.5"
+  }
+}
