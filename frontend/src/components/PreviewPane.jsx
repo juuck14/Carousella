@@ -30,18 +30,22 @@ export default function PreviewPane({ pages, idx, setIdx, doc, cfg }) {
   const stageRef  = useRef(null)
   const thumbsRef = useRef(null)
 
-  // ResizeObserver로 스테이지 크기 계산
+  // ResizeObserver로 스테이지 크기 계산 (aspect ratio 반영)
   useEffect(() => {
     const el = stageRef.current
     if (!el) return
     const ro = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect
-      const sz = Math.max(240, Math.min(width - 120, height - 40))
+      const aspect = (cfg?.canvasHeight || 1080) / 1080
+      // 너비 기준과 높이 기준 중 작은 값 사용
+      const byW = width - 120
+      const byH = (height - 40) / aspect
+      const sz  = Math.max(240, Math.min(byW, byH))
       setBoxSize(sz)
     })
     ro.observe(el)
     return () => ro.disconnect()
-  }, [])
+  }, [cfg?.canvasHeight])
 
   // 키보드 내비게이션
   useEffect(() => {
@@ -79,7 +83,7 @@ export default function PreviewPane({ pages, idx, setIdx, doc, cfg }) {
       {/* 스테이지 + 화살표 */}
       <div className={styles.stage} ref={stageRef}>
         <Arrow dir="left"  onClick={() => setIdx(i => Math.max(0, i - 1))}              disabled={idx === 0} />
-        <div className={styles.pageBox} style={{ width: boxSize, height: boxSize }}>
+        <div className={styles.pageBox} style={{ width: boxSize, height: Math.round(boxSize * (cfg?.canvasHeight || 1080) / 1080) }}>
           {page && <CarouselPage page={page} size={boxSize} doc={doc} cfg={cfg} />}
         </div>
         <Arrow dir="right" onClick={() => setIdx(i => Math.min(pages.length - 1, i + 1))} disabled={idx >= pages.length - 1} />

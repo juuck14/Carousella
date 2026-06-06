@@ -55,7 +55,7 @@ export function usePagination(bodyText, cfg, measureRef) {
     if (!el) return
 
     const m    = cfg.margin
-    const maxH = 1080 - 2 * m - 60          // 가용 텍스트 높이
+    const maxH = (cfg.canvasHeight || 1080) - 2 * m - 60   // 가용 텍스트 높이
     const gap  = cfg.bodyFontSize * cfg.paraSpacing   // 단락 간 간격(px)
 
     // 측정용 div 스타일 (1080 기준 절대 크기)
@@ -125,7 +125,7 @@ export function usePagination(bodyText, cfg, measureRef) {
       ...bodyPages.map((paras, i) => ({ type: 'body', n: i + 2, paras })),
     ])
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bodyText, cfg.bodyFontSize, cfg.lineSpacing, cfg.paraSpacing, cfg.margin])
+  }, [bodyText, cfg.bodyFontSize, cfg.lineSpacing, cfg.paraSpacing, cfg.margin, cfg.canvasHeight])
 
   return pages
 }

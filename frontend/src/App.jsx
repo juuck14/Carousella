@@ -200,7 +200,7 @@ export default function App() {
             <div className={styles.toolbarInfo}>
               <span className={styles.pageTotal}>{pages.length}장</span>
               <div className={styles.toolDivider} />
-              <span className={styles.spec}>1080 × 1080</span>
+              <span className={styles.spec}>1080 × {settings.canvasHeight || 1080}</span>
             </div>
             <div className={styles.toolBtns}>
               <button
