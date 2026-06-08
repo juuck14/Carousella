@@ -21,11 +21,13 @@ import { renderBody } from './renderBody'
  * Google Fonts <link>가 index.html에 삽입된 상태여야 한다.
  */
 export async function loadFonts(cfg) {
+  const bodyFamily = cfg.bodyFontFamily || 'Noto Serif KR'
   const specs = [
-    // 본문 / 규칙선 / 페이지 번호
-    `400 ${cfg.bodyFontSize}px "Noto Serif KR"`,
+    // 본문
+    `400 ${cfg.bodyFontSize}px "${bodyFamily}"`,
+    `700 ${cfg.bodyFontSize}px "${bodyFamily}"`,
+    // 규칙선 / 페이지 번호 / 표지 레이블
     `400 ${cfg.pageNumSize}px "Noto Serif KR"`,
-    // 표지 레이블
     `400 ${cfg.coverLabelSize}px "Noto Serif KR"`,
     // 표지 제목 (Nanum Myeongjo)
     `700 ${cfg.coverTitleSize}px "Nanum Myeongjo"`,

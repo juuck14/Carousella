@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, CONFIG_FIELDS } from '../lib/defaultConfig'
+import { DEFAULT_CONFIG, CONFIG_FIELDS, FONT_OPTIONS } from '../lib/defaultConfig'
 import styles from './SettingsPanel.module.css'
 
 export default function SettingsPanel({ settings, onChange }) {
@@ -6,15 +6,43 @@ export default function SettingsPanel({ settings, onChange }) {
     onChange({ ...settings, [key]: Number(value) })
   }
 
-  function handleReset() {
-    onChange({ ...DEFAULT_CONFIG })
+  function handleFontChange(id) {
+    onChange({ ...settings, bodyFontFamily: id })
   }
+
+  function handleReset() {
+    const reset = { ...settings, bodyFontFamily: DEFAULT_CONFIG.bodyFontFamily }
+    for (const { key } of CONFIG_FIELDS) reset[key] = DEFAULT_CONFIG[key]
+    onChange(reset)
+  }
+
+  const currentFont = settings.bodyFontFamily ?? DEFAULT_CONFIG.bodyFontFamily
 
   return (
     <div className={styles.panel}>
       <div className={styles.panelHeader}>
         <span className={styles.panelTitle}>디자인 설정</span>
         <button className={styles.resetBtn} onClick={handleReset}>초기화</button>
+      </div>
+
+      {/* 본문 폰트 선택 */}
+      <div className={styles.field}>
+        <div className={styles.fieldHeader}>
+          <span className={styles.fieldLabel}>본문 폰트</span>
+        </div>
+        <div className={styles.fontRow}>
+          {FONT_OPTIONS.map(({ id, label }) => (
+            <button
+              key={id}
+              type="button"
+              className={`${styles.fontBtn} ${id === currentFont ? styles.fontBtnActive : ''}`}
+              style={{ fontFamily: `"${id}", serif` }}
+              onClick={() => handleFontChange(id)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {CONFIG_FIELDS.map(({ key, label, min, max, step, unit = '', format }) => {

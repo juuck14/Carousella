@@ -3,8 +3,8 @@
  * 폰트 설정, 텍스트 너비 측정, 텍스트 그리기.
  */
 
-export function setFont(ctx, size, weight = 400) {
-  ctx.font = `${weight} ${size}px "Noto Serif KR"`
+export function setFont(ctx, size, weight = 400, family = 'Noto Serif KR') {
+  ctx.font = `${weight} ${size}px "${family}"`
 }
 
 /**

@@ -36,6 +36,14 @@
   letter-spacing: 0;
   margin-left: auto;
 }
+
+.charCount {
+  font-size: 11px;
+  color: var(--faint);
+  text-align: right;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
 .hint code {
   font-family: var(--mono);
   background: var(--bg);
@@ -171,6 +179,32 @@
   border-color: var(--text);
   transform: scale(1.22);
   box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.filterRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.filterBtn {
+  padding: 5px 12px;
+  font-size: 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--stage);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.filterBtn:hover {
+  border-color: var(--text);
+}
+.filterBtnActive {
+  background: var(--text);
+  color: var(--panel);
+  border-color: var(--text);
 }
 
 /* ── 서식 툴바 ───────────────────────────────── */

@@ -10,7 +10,8 @@
 
 import { useCallback, useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { TEST_DATA } from '../lib/testData'
+import { SAMPLE_REVIEW, loadSampleImageFile } from '../lib/sampleData'
+import { IMAGE_FILTERS } from '../lib/imageFilters'
 import styles from './InputPanel.module.css'
 
 // ── 표지 배경 팔레트 (색상환 순서, 채도 있는 다크 톤) ─────────────
@@ -102,19 +103,24 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange, dr
 
   function clearImage(e) {
     e.stopPropagation()
-    setDoc({ imageFile: null, imageUrl: null })
+    setDoc({ imageFile: null, imageUrl: null, imageFilter: 'none' })
   }
 
-  function loadSample() {
+  async function loadSample() {
     setDoc({
-      title:    TEST_DATA.title,
-      subtitle: TEST_DATA.subtitle,
-      body:     TEST_DATA.body,
+      title:    SAMPLE_REVIEW.title,
+      subtitle: SAMPLE_REVIEW.subtitle,
+      body:     SAMPLE_REVIEW.body,
     })
+    const file = await loadSampleImageFile()
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (e) => setDoc({ imageFile: file, imageUrl: e.target.result, imageFilter: 'none' })
+    reader.readAsDataURL(file)
   }
 
   function clearAll() {
-    setDoc({ title: '', subtitle: '', body: '', imageFile: null, imageUrl: null })
+    setDoc({ title: '', subtitle: '', body: '', imageFile: null, imageUrl: null, imageFilter: 'none' })
   }
 
   // 서식 툴바 클릭
@@ -222,7 +228,12 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange, dr
           <input {...getInputProps()} />
           {doc.imageUrl ? (
             <>
-              <img src={doc.imageUrl} className={styles.preview} alt="표지" />
+              <img
+                src={doc.imageUrl}
+                className={styles.preview}
+                alt="표지"
+                style={{ filter: IMAGE_FILTERS.find(f => f.id === doc.imageFilter)?.css || 'none' }}
+              />
               <button type="button" className={styles.clearImgBtn} onClick={clearImage}>✕</button>
             </>
           ) : (
@@ -231,6 +242,22 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange, dr
             </span>
           )}
         </div>
+
+        {/* 이미지 필터 */}
+        {doc.imageUrl && (
+          <div className={styles.filterRow}>
+            {IMAGE_FILTERS.map(({ id, label }) => (
+              <button
+                key={id}
+                type="button"
+                className={`${styles.filterBtn} ${(doc.imageFilter || 'none') === id ? styles.filterBtnActive : ''}`}
+                onClick={() => setDoc({ imageFilter: id })}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* 배경색 팔레트 */}
         <div className={styles.palette}>
@@ -294,6 +321,7 @@ export default function InputPanel({ doc, setDoc, settings, onSettingsChange, dr
           onKeyDown={onKeyDown}
           rows={14}
         />
+        <div className={styles.charCount}>{doc.body.length.toLocaleString()}자</div>
       </div>
 
       {/* 하단 버튼 */}

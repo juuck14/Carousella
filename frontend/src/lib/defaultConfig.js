@@ -5,8 +5,17 @@
  * CONFIG_FIELDS  : SettingsPanel 슬라이더 정의
  */
 
+/** 본문에 사용할 수 있는 폰트 목록 (Google Fonts, index.html에 로드됨) */
+export const FONT_OPTIONS = [
+  { id: 'Noto Serif KR',    label: '명조 (기본)' },
+  { id: 'Noto Sans KR',     label: '고딕' },
+  { id: 'Gowun Batang',     label: '고운바탕' },
+  { id: 'IBM Plex Sans KR', label: 'Plex 산스' },
+]
+
 export const DEFAULT_CONFIG = {
   // 본문 — 무드 A(활자) 기준
+  bodyFontFamily:  'Noto Serif KR',
   bodyFontSize:    30,
   lineSpacing:     1.95,
   paraSpacing:     0.93,
