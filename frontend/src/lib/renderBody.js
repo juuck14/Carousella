@@ -16,13 +16,13 @@ import { parseInline } from './inlineMarkdown'
  * bold → font-weight:700, italic → font-style:italic.
  * letterSpacing은 무시(ctx.letterSpacing은 Chromium만 지원).
  */
-function drawInlineLine(ctx, x, y, text, fontSize) {
+function drawInlineLine(ctx, x, y, text, fontSize, fontFamily) {
   const segs = parseInline(text)
   let cx = x
   for (const seg of segs) {
     const weight = seg.t === 'bold' ? 700 : 400
     const style  = seg.t === 'em'   ? 'italic ' : ''
-    ctx.font = `${style}${weight} ${fontSize}px "Noto Serif KR"`
+    ctx.font = `${style}${weight} ${fontSize}px "${fontFamily}"`
     ctx.fillText(seg.s, cx, y)
     cx += ctx.measureText(seg.s).width
   }
@@ -30,9 +30,10 @@ function drawInlineLine(ctx, x, y, text, fontSize) {
 
 export function renderBody(ctx, pageEntries, pageNum, cfg) {
   const {
-    margin, bodyFontSize, lineSpacing, paraSpacing, letterSpacing,
+    margin, bodyFontFamily, bodyFontSize, lineSpacing, paraSpacing, letterSpacing,
     bgColor, textColor, pageNumColor, ruleColor, pageNumSize, canvasSize,
   } = cfg
+  const fontFamily = bodyFontFamily || 'Noto Serif KR'
   const canvasH = cfg.canvasHeight || canvasSize
 
   const lineH    = bodyFontSize * lineSpacing
@@ -51,14 +52,14 @@ export function renderBody(ctx, pageEntries, pageNum, cfg) {
   ctx.stroke()
 
   // ── 본문 텍스트 ───────────────────────────────────────────
-  setFont(ctx, bodyFontSize, 400)
+  setFont(ctx, bodyFontSize, 400, fontFamily)
   ctx.fillStyle    = textColor
   ctx.textBaseline = 'top'
   let y = margin + 24      // 상단 구분선 아래 여백
 
   for (const [text] of pageEntries) {
     if (text.trim()) {
-      drawInlineLine(ctx, margin, y, text, bodyFontSize)
+      drawInlineLine(ctx, margin, y, text, bodyFontSize, fontFamily)
       y += lineH
     } else {
       y += paraGapH        // 단락 간격

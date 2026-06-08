@@ -8,6 +8,7 @@
 
 import { setFont, measureWidth } from './canvasUtils'
 import { wrapParagraph } from './parseText'
+import { getFilterCss } from './imageFilters'
 
 /** File → HTMLImageElement */
 export async function loadCoverImage(file) {
@@ -52,7 +53,9 @@ export function renderCover(ctx, title, subtitle, label, coverImg, cfg) {
     ctx.beginPath()
     ctx.rect(0, splitY, canvasSize, imgAreaH)
     ctx.clip()
+    ctx.filter = getFilterCss(cfg.imageFilter)
     drawCoverFit(ctx, coverImg, 0, splitY, canvasSize, imgAreaH)
+    ctx.filter = 'none'
     ctx.restore()
   } else {
     ctx.fillStyle = '#1A1A1A'

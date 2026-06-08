@@ -1,10 +1,10 @@
 /**
- * testData.js — 개발용 테스트 데이터
- * InputPanel의 "테스트 데이터" 버튼에서 사용.
+ * sampleReview.js — 샘플 음악 리뷰 텍스트
+ * "샘플" 버튼에서 사용하는 더미 데이터.
  * --- 마커를 포함해 강제 페이지 분리도 함께 테스트할 수 있다.
  */
 
-export const TEST_DATA = {
+export const SAMPLE_REVIEW = {
   title: '디지털, 혹은 재현된 환상',
   subtitle: '[Velocity : Design : Comfort] 리뷰',
   body: `나는 <Velocity : Design : Comfort>을 몇 년 전 친구의 추천으로 처음 듣게 되었다. 나는 그 당시를 어렴풋이 기억한다. 안타깝지만 이 앨범을 듣자마자 거대한 쇼크가 일어나서 온몸에 전율이 돋고 내 인생이 바뀌는 일 같은 건 일어나지 않았다.

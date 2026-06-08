@@ -12,6 +12,7 @@
  */
 
 import { parseInline } from '../lib/inlineMarkdown'
+import { getFilterCss } from '../lib/imageFilters'
 
 const SERIF   = "'Noto Serif KR', serif"
 const DISPLAY = "'Nanum Myeongjo', 'Noto Serif KR', serif"
@@ -53,7 +54,7 @@ function InlineSegs({ text }) {
 }
 
 // ─── 단락 블록 ────────────────────────────────────────────────────
-function Paras({ paras, gap, fontSize, lineHeight }) {
+function Paras({ paras, gap, fontSize, lineHeight, fontFamily }) {
   return (
     <>
       {paras.map((p, i) => {
@@ -62,7 +63,7 @@ function Paras({ paras, gap, fontSize, lineHeight }) {
           <p key={i} style={{
             margin: 0,
             marginTop: i ? gap : 0,
-            fontFamily: SERIF,
+            fontFamily: fontFamily ? `"${fontFamily}", serif` : SERIF,
             fontSize,
             lineHeight,
             color: C.ink,
@@ -94,7 +95,7 @@ function CoverA({ doc, cfg }) {
       {/* 하단 이미지 */}
       <div style={{ position: 'absolute', left: 0, right: 0, top: split, bottom: 0, overflow: 'hidden' }}>
         {doc.imageUrl
-          ? <img src={doc.imageUrl} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          ? <img src={doc.imageUrl} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: getFilterCss(doc.imageFilter) }} />
           : <Stripe />
         }
       </div>
@@ -145,7 +146,7 @@ function BodyA({ page, cfg }) {
 
       {/* 본문 텍스트 */}
       <div style={{ position: 'absolute', left: m, right: m, top: m + 24 }}>
-        <Paras paras={page.paras} gap={gap} fontSize={cfg.bodyFontSize} lineHeight={cfg.lineSpacing} />
+        <Paras paras={page.paras} gap={gap} fontSize={cfg.bodyFontSize} lineHeight={cfg.lineSpacing} fontFamily={cfg.bodyFontFamily} />
       </div>
 
       {/* 하단 구분선 */}

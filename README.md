@@ -17,15 +17,20 @@
 | **인라인 마크다운** | `**굵게**`, `*기울임*` 문법 지원 (미리보기 + 내보내기 동시 적용) |
 | **라벨 선택** | 음악 / 영화 / 기타 중 선택 → 표지 좌상단에 표시 |
 | **표지 이미지** | 드래그 앤 드롭 또는 클릭으로 업로드, cover-fit 적용 |
+| **이미지 필터** | 없음 / 흑백 / 세피아 / 고대비 / 페이드 중 선택해 표지 이미지에 적용 (미리보기·내보내기 동일 반영) |
 | **표지 배경색** | 8가지 다크 팔레트에서 선택 |
 | **텍스트 서식 툴바** | Bold / Italic / 페이지 구분선 버튼 + Ctrl+B / Ctrl+I 단축키 |
+| **본문 글자 수 표시** | 작성 중인 본문의 글자 수를 텍스트박스 아래에 실시간 표시 |
 | **PNG 내보내기** | 현재 페이지 단건 / 전체 ZIP 일괄 다운로드 |
 | **ZIP 내보내기** | PNG 전체 + `content.md`(원고) + 표지 이미지를 한 번에 묶어 제공 |
 | **디자인 설정** | 폰트 크기·줄간격·여백·표지 비율 등 슬라이더로 실시간 조정 |
+| **본문 폰트 선택** | 명조 / 고딕 / 고운바탕 / Plex 산스 중 선택, 미리보기·내보내기 동일 반영 |
+| **샘플 데이터** | 샘플 텍스트 + 샘플 표지 이미지를 한 번에 채워 빠르게 테스트 |
 | **임시저장** | 작성 중인 내용을 브라우저에 임시 저장 (최대 20개), 목록에서 불러오기·삭제 |
 | **설정 자동 저장** | 조정한 설정을 브라우저 로컬스토리지에 저장 |
 | **사이드바 리사이즈** | 드래그로 입력창 너비 조절 (데스크톱) |
 | **모바일 지원** | 작성 / 미리보기 / 설정 탭 전환 레이아웃 |
+| **버전 표시 / GitHub 링크** | 헤더에 현재 버전과 저장소 링크 아이콘 표시 |
 
 ---
 
@@ -108,8 +113,9 @@ frontend/
 │   │   ├── useSettings.js      # 설정 로컬스토리지 영속
 │   │   └── useDrafts.js        # 임시저장 로컬스토리지 CRUD (최대 20개)
 │   ├── lib/
-│   │   ├── defaultConfig.js    # 기본 설정값 + 슬라이더 필드 정의
-│   │   ├── testData.js         # 샘플 텍스트 데이터
+│   │   ├── defaultConfig.js    # 기본 설정값 + 슬라이더 필드 정의 + 폰트 옵션
+│   │   ├── sampleData/         # 샘플 텍스트(sampleReview.js) + 샘플 이미지 로더(index.js)
+│   │   ├── imageFilters.js     # 표지 이미지 필터 프리셋 (없음/흑백/세피아/고대비/페이드)
 │   │   ├── inlineMarkdown.js   # **bold** / *italic* 파싱
 │   │   ├── generate.js         # Canvas 내보내기 진입점
 │   │   ├── renderCover.js      # 표지 Canvas 렌더러
@@ -135,7 +141,7 @@ frontend/
 | UI 프레임워크 | React 19 + Vite 6 |
 | 미리보기 렌더링 | CSS / HTML (DOM, `transform: scale`) |
 | PNG 내보내기 | Canvas API |
-| 폰트 | Google Fonts (Noto Serif KR, Nanum Myeongjo) |
+| 폰트 | Google Fonts (Noto Serif KR, Noto Sans KR, Gowun Batang, IBM Plex Sans KR, Nanum Myeongjo) |
 | 이미지 업로드 | react-dropzone |
 | ZIP 생성 | JSZip |
 | 호스팅 | GitHub Pages (정적) |
